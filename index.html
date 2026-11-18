@@ -6,9 +6,9 @@
 
 <meta charset="UTF-8">
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>كتابي | مساحتك الخاصة للكتابة</title>
+<title>كتابي | كل حكاية تستحق أن تُروى</title>
 
 <style>
 
@@ -16,51 +16,49 @@
 
 body{margin:0;background:#f5f3ef;color:#252525;font-family:Tahoma,Arial,sans-serif}
 
-header{background:#202d3b;color:white;padding:22px 6%;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+header{background:#202d3b;color:white;padding:20px 6%;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
 
-.logo{font-size:27px;font-weight:bold}
+.logo{font-size:28px;font-weight:bold}
 
 header small{color:#d5dce3}
 
-button{border:0;border-radius:8px;padding:11px 18px;cursor:pointer;font-size:14px;font-family:inherit}
+main{max-width:900px;margin:30px auto;padding:0 15px}
 
-.primary{background:#b18a54;color:white}
+button{border:0;border-radius:8px;padding:12px 18px;cursor:pointer;font-family:inherit;font-size:14px}
+
+.primary{background:#ad8752;color:white}
 
 .secondary{background:#e9e5dd;color:#333}
 
-main{max-width:900px;margin:30px auto;padding:0 16px}
+.panel,.hero,.writing{background:white;border:1px solid #e9e4dc;border-radius:13px;padding:23px;margin-bottom:20px}
 
-.hero{background:white;padding:35px 25px;border-radius:14px;text-align:center;margin-bottom:22px;border:1px solid #e9e4dc}
+.hero{text-align:center;padding:38px 20px}
 
-.hero h1{margin:0 0 12px;color:#263748}
+.hero h1{color:#263748}
 
-.hero p{color:#777;line-height:1.9}
+.hero p{color:#777;line-height:2}
 
-.panel{background:white;border:1px solid #e9e4dc;border-radius:12px;padding:22px;margin-bottom:20px}
+h2{font-size:20px;color:#263748;margin-top:0}
 
-h2{font-size:20px;margin-top:0;color:#263748}
+input,textarea,select{width:100%;padding:13px;margin:8px 0 15px;border:1px solid #ddd;border-radius:8px;font-family:inherit;font-size:15px}
 
-input,textarea,select{width:100%;padding:13px;margin:7px 0 14px;border:1px solid #ddd;border-radius:8px;font-family:inherit;font-size:15px;background:#fff}
-
-textarea{min-height:150px;resize:vertical;line-height:1.8}
+textarea{min-height:150px;line-height:1.9;resize:vertical}
 
 label{font-size:14px;color:#555}
 
-.writing{background:white;border:1px solid #e9e4dc;border-radius:12px;padding:20px;margin-bottom:14px}
+.notice{background:#f4f0e8;color:#685536;padding:12px;border-radius:8px;margin-top:12px;line-height:1.8}
 
-.writing h3{margin-top:0;color:#263748}
+.hidden{display:none!important}
 
-.writing p{line-height:2;white-space:pre-wrap}
+.actions{display:flex;gap:9px;flex-wrap:wrap}
 
-.meta{font-size:12px;color:#888;margin-bottom:12px}
+.writing h3{color:#263748}
 
-.notice{padding:12px;border-radius:8px;background:#f4f0e8;color:#685536;margin:12px 0;line-height:1.7}
+.writing p{white-space:pre-wrap;line-height:2}
 
-.hidden{display:none}
+.meta{color:#888;font-size:12px;margin-bottom:12px}
 
-footer{text-align:center;padding:30px;color:#888;font-size:12px}
-
-.actions{display:flex;gap:8px;flex-wrap:wrap}
+footer{text-align:center;color:#888;padding:30px;font-size:12px}
 
 </style>
 
@@ -80,11 +78,11 @@ footer{text-align:center;padding:30px;color:#888;font-size:12px}
 
   <div class="actions">
 
-    <button class="secondary" onclick="scrollToSection('writings')">اكتشف الكتابات</button>
+    <button class="secondary" onclick="go('writings')">اكتشف الكتابات</button>
 
-    <button class="primary" id="loginButton" onclick="showLogin()">تسجيل الدخول</button>
+    <button class="primary" id="loginButton" onclick="toggleLogin()">دخول / إنشاء حساب</button>
 
-    <button class="secondary hidden" id="logoutButton" onclick="logout()">تسجيل الخروج</button>
+    <button class="secondary hidden" id="logoutButton" onclick="logout()">خروج</button>
 
   </div>
 
@@ -96,25 +94,35 @@ footer{text-align:center;padding:30px;color:#888;font-size:12px}
 
     <h1>أهلاً بك في كتابي</h1>
 
-    <p>مساحتك لتكتب أفكارك، وتحفظ ذكرياتك، وتشارك تجاربك مع الآخرين.<br>كل كتابة هي صفحة من حكايتك.</p>
+    <p>مساحتك لتكتب أفكارك، وتحفظ ذكرياتك، وتشارك تجاربك مع الآخرين.</p>
 
-    <button class="primary" onclick="scrollToSection('writePanel')">ابدأ بكتابة قصتك</button>
+    <button class="primary" onclick="go('writePanel')">اكتب حكايتك</button>
 
   </section>
 
   <section class="panel hidden" id="loginPanel">
 
-    <h2>تسجيل الدخول</h2>
+    <h2>حسابك في كتابي</h2>
 
-    <p>اكتب بريدك الإلكتروني وسنرسل إليك رابط الدخول.</p>
+    <label>اسم حساب إنستغرام (بدون @)</label>
 
-    <label>البريد الإلكتروني</label>
+    <input id="username" maxlength="30" placeholder="مثلاً ahmed_iraq" autocomplete="username">
 
-    <input type="email" id="email" placeholder="example@email.com">
+    <label>كلمة المرور</label>
 
-    <button class="primary" onclick="login()">إرسال رابط الدخول</button>
+    <input id="password" type="password" placeholder="كلمة المرور" autocomplete="current-password">
+
+    <div class="actions">
+
+      <button class="primary" onclick="register()">إنشاء حساب جديد</button>
+
+      <button class="secondary" onclick="login()">دخول</button>
+
+    </div>
 
     <div id="loginMessage" class="notice hidden"></div>
+
+    <p style="font-size:12px;color:#888;line-height:1.8">اختر كلمة مرور قوية واحتفظ بها؛ لا يوجد استرجاع عبر البريد الإلكتروني في هذا النظام.</p>
 
   </section>
 
@@ -122,19 +130,15 @@ footer{text-align:center;padding:30px;color:#888;font-size:12px}
 
     <h2>ملفي الشخصي</h2>
 
-    <label>الاسم الذي سيظهر للقراء</label>
+    <label>الاسم الذي يظهر للقراء</label>
 
-    <input id="displayName" placeholder="اكتب اسمك">
+    <input id="displayName" placeholder="اسمك">
 
-    <label>معرّف إنستغرام (اختياري، دون @)</label>
+    <label>نبذة عنك</label>
 
-    <input id="instagram" placeholder="username">
+    <input id="bio" placeholder="اكتب نبذة قصيرة">
 
-    <label>نبذة قصيرة عنك</label>
-
-    <input id="bio" placeholder="اكتب نبذة بسيطة">
-
-    <button class="primary" onclick="saveProfile()">حفظ بياناتي</button>
+    <button class="primary" onclick="saveProfile()">حفظ الملف الشخصي</button>
 
     <div id="profileMessage" class="notice hidden"></div>
 
@@ -146,7 +150,7 @@ footer{text-align:center;padding:30px;color:#888;font-size:12px}
 
     <label>عنوان الكتابة</label>
 
-    <input id="title" maxlength="150" placeholder="عنوان قصتك أو فكرتك">
+    <input id="title" maxlength="150" placeholder="عنوان قصتك">
 
     <label>التصنيف</label>
 
@@ -170,7 +174,7 @@ footer{text-align:center;padding:30px;color:#888;font-size:12px}
 
     </select>
 
-    <label>نشر الكتابة باسم</label>
+    <label>انشر باسم</label>
 
     <select id="identity">
 
@@ -186,7 +190,7 @@ footer{text-align:center;padding:30px;color:#888;font-size:12px}
 
       <label>الاسم المستعار</label>
 
-      <input id="alias" placeholder="اكتب الاسم المستعار">
+      <input id="alias" placeholder="اسمك المستعار">
 
     </div>
 
@@ -204,11 +208,7 @@ footer{text-align:center;padding:30px;color:#888;font-size:12px}
 
     <h2>أحدث الكتابات</h2>
 
-    <div id="posts">
-
-      <div class="notice">جارٍ تحميل الكتابات...</div>
-
-    </div>
+    <div id="posts"><div class="notice">جارٍ تحميل الكتابات...</div></div>
 
   </section>
 
@@ -222,243 +222,347 @@ footer{text-align:center;padding:30px;color:#888;font-size:12px}
 
 <script>
 
-const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 
-let currentUser = null;
+const INTERNAL_DOMAIN="login.kitabi.invalid";
 
-function scrollToSection(id){
+let currentUser=null;
 
-  document.getElementById(id).scrollIntoView({behavior:"smooth"});
+function go(id){
 
-}
-
-function message(id,text){
-
-  const el=document.getElementById(id);
-
-  el.textContent=text;
-
-  el.classList.remove("hidden");
+ document.getElementById(id).scrollIntoView({behavior:"smooth"});
 
 }
 
-function showLogin(){
+function showMessage(id,msg){
 
-  document.getElementById("loginPanel").classList.toggle("hidden");
+ const el=document.getElementById(id);
 
-  scrollToSection("loginPanel");
+ el.textContent=msg;
+
+ el.classList.remove("hidden");
+
+}
+
+function hideMessage(id){
+
+ document.getElementById(id).classList.add("hidden");
+
+}
+
+function toggleLogin(){
+
+ document.getElementById("loginPanel").classList.toggle("hidden");
+
+ go("loginPanel");
+
+}
+
+function getCredentials(){
+
+ const username=document.getElementById("username").value.trim().toLowerCase();
+
+ const password=document.getElementById("password").value;
+
+ if(!/^[a-z0-9._]{1,30}$/.test(username)){
+
+  throw new Error("اكتب اسم مستخدم صحيحاً بحروف إنجليزية أو أرقام أو نقطة أو شرطة سفلية.");
+
+ }
+
+ if(password.length<8){
+
+  throw new Error("كلمة المرور يجب أن تكون 8 أحرف على الأقل.");
+
+ }
+
+ return {username,password,email:username+"@"+INTERNAL_DOMAIN};
 
 }
 
 document.getElementById("identity").addEventListener("change",function(){
 
-  document.getElementById("aliasBox").classList.toggle("hidden",this.value!=="alias");
+ document.getElementById("aliasBox").classList.toggle("hidden",this.value!=="alias");
 
 });
 
-async function login(){
+async function register(){
 
-  const email=document.getElementById("email").value.trim();
+ hideMessage("loginMessage");
 
-  if(!email){message("loginMessage","يرجى كتابة البريد الإلكتروني.");return;}
+ try{
 
-  const {error}=await db.auth.signInWithOtp({
+  const c=getCredentials();
 
-    email,
+  const {data,error}=await db.auth.signUp({
 
-    options:{emailRedirectTo:window.location.href}
+   email:c.email,
+
+   password:c.password
 
   });
 
-  if(error){message("loginMessage","تعذر إرسال الرابط: "+error.message);}
+  if(error)throw error;
 
-  else{message("loginMessage","تم إرسال رابط الدخول إلى بريدك الإلكتروني. افتح الرسالة واضغط الرابط.");}
+  if(!data.session){
+
+   showMessage("loginMessage","لم يتم تسجيل الدخول تلقائياً. تحقق من إعداد تأكيد البريد في Supabase.");
+
+   return;
+
+  }
+
+  const {error:profileError}=await db.from("profiles").update({
+
+   instagram_username:c.username,
+
+   display_name:c.username
+
+  }).eq("id",data.user.id);
+
+  if(profileError)throw profileError;
+
+  showMessage("loginMessage","تم إنشاء حسابك بنجاح!");
+
+  currentUser=data.user;
+
+  updateInterface();
+
+  await loadProfile();
+
+  await loadWritings();
+
+ }catch(e){
+
+  showMessage("loginMessage","تعذر إنشاء الحساب: "+e.message);
+
+ }
+
+}
+
+async function login(){
+
+ hideMessage("loginMessage");
+
+ try{
+
+  const c=getCredentials();
+
+  const {data,error}=await db.auth.signInWithPassword({
+
+   email:c.email,
+
+   password:c.password
+
+  });
+
+  if(error)throw error;
+
+  currentUser=data.user;
+
+  updateInterface();
+
+  await loadProfile();
+
+  await loadWritings();
+
+  showMessage("loginMessage","تم تسجيل الدخول بنجاح.");
+
+ }catch(e){
+
+  showMessage("loginMessage","تعذر الدخول: "+e.message);
+
+ }
 
 }
 
 async function logout(){
 
-  await db.auth.signOut();
+ await db.auth.signOut();
 
-  location.reload();
+ currentUser=null;
+
+ updateInterface();
+
+ location.reload();
 
 }
 
 async function loadProfile(){
 
-  if(!currentUser)return;
+ if(!currentUser)return;
 
-  const {data}=await db.from("profiles")
+ const {data,error}=await db.from("profiles")
 
-    .select("display_name,instagram_username,bio")
+  .select("display_name,bio")
 
-    .eq("id",currentUser.id).maybeSingle();
+  .eq("id",currentUser.id).maybeSingle();
 
-  if(data){
+ if(error){showMessage("profileMessage",error.message);return;}
 
-    document.getElementById("displayName").value=data.display_name||"";
+ if(data){
 
-    document.getElementById("instagram").value=data.instagram_username||"";
+  document.getElementById("displayName").value=data.display_name||"";
 
-    document.getElementById("bio").value=data.bio||"";
+  document.getElementById("bio").value=data.bio||"";
 
-  }
+ }
 
 }
 
 async function saveProfile(){
 
-  if(!currentUser)return;
+ if(!currentUser)return;
 
-  const display_name=document.getElementById("displayName").value.trim();
+ const display_name=document.getElementById("displayName").value.trim();
 
-  const instagram_username=document.getElementById("instagram").value.trim()||null;
+ const bio=document.getElementById("bio").value.trim();
 
-  const bio=document.getElementById("bio").value.trim();
+ if(!display_name){showMessage("profileMessage","اكتب اسم العرض أولاً.");return;}
 
-  if(!display_name){message("profileMessage","يرجى كتابة اسم العرض.");return;}
+ const {error}=await db.from("profiles").update({display_name,bio})
 
-  const {error}=await db.from("profiles").update({
+  .eq("id",currentUser.id);
 
-    display_name,instagram_username,bio
+ if(error)showMessage("profileMessage","تعذر الحفظ: "+error.message);
 
-  }).eq("id",currentUser.id);
-
-  if(error)message("profileMessage","تعذر الحفظ: "+error.message);
-
-  else message("profileMessage","تم حفظ بياناتك بنجاح.");
+ else showMessage("profileMessage","تم حفظ بياناتك.");
 
 }
 
 async function publish(){
 
-  if(!currentUser){message("publishMessage","سجّل الدخول أولاً حتى تتمكن من النشر.");return;}
+ hideMessage("publishMessage");
 
-  const title=document.getElementById("title").value.trim();
+ if(!currentUser){showMessage("publishMessage","سجّل الدخول أولاً.");return;}
 
-  const body=document.getElementById("body").value.trim();
+ const title=document.getElementById("title").value.trim();
 
-  const category=document.getElementById("category").value;
+ const body=document.getElementById("body").value.trim();
 
-  const identity_mode=document.getElementById("identity").value;
+ const category=document.getElementById("category").value;
 
-  const alias=document.getElementById("alias").value.trim();
+ const identity_mode=document.getElementById("identity").value;
 
-  if(!body){message("publishMessage","اكتب نص الكتابة أولاً.");return;}
+ const alias=document.getElementById("alias").value.trim();
 
-  if(identity_mode==="alias"&&!alias){message("publishMessage","يرجى كتابة الاسم المستعار.");return;}
+ if(!body){showMessage("publishMessage","اكتب نص الكتابة أولاً.");return;}
 
-  const {error}=await db.from("writings").insert({
+ if(identity_mode==="alias"&&!alias){showMessage("publishMessage","اكتب الاسم المستعار.");return;}
 
-    user_id:currentUser.id,title,body,category,identity_mode,
+ const {error}=await db.from("writings").insert({
 
-    alias:identity_mode==="alias"?alias:null
+  user_id:currentUser.id,title,body,category,identity_mode,
 
-  });
+  alias:identity_mode==="alias"?alias:null
 
-  if(error){message("publishMessage","تعذر النشر: "+error.message);return;}
+ });
 
-  message("publishMessage","تم نشر كتابتك بنجاح.");
+ if(error){showMessage("publishMessage","تعذر النشر: "+error.message);return;}
 
-  document.getElementById("title").value="";
+ document.getElementById("title").value="";
 
-  document.getElementById("body").value="";
+ document.getElementById("body").value="";
 
-  document.getElementById("alias").value="";
+ document.getElementById("alias").value="";
 
-  await loadWritings();
+ showMessage("publishMessage","تم نشر كتابتك بنجاح.");
+
+ await loadWritings();
 
 }
 
-function escapeHTML(value){
+function safe(v){
 
-  return String(value??"").replace(/[&<>"']/g,function(c){
+ return String(v??"").replace(/[&<>"']/g,c=>({
 
-    return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c];
+  "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
 
-  });
+ }[c]));
 
 }
 
 async function loadWritings(){
 
-  const container=document.getElementById("posts");
+ const box=document.getElementById("posts");
 
-  const {data,error}=await db.from("writings")
+ const {data,error}=await db.from("writings")
 
-    .select("id,title,body,category,identity_mode,alias,created_at,profiles(display_name)")
+  .select("id,title,body,category,identity_mode,alias,created_at,profiles(display_name)")
 
-    .order("created_at",{ascending:false});
+  .order("created_at",{ascending:false});
 
-  if(error){container.innerHTML='<div class="notice">تعذر تحميل الكتابات. '+escapeHTML(error.message)+'</div>';return;}
+ if(error){box.innerHTML='<div class="notice">تعذر تحميل الكتابات: '+safe(error.message)+'</div>';return;}
 
-  if(!data||data.length===0){container.innerHTML='<div class="notice">لا توجد كتابات منشورة حالياً. كن أول من يكتب حكايته.</div>';return;}
+ if(!data||!data.length){
 
-  container.innerHTML=data.map(post=>{
+  box.innerHTML='<div class="notice">لا توجد كتابات بعد. كن أول من يشارك حكايته.</div>';
 
-    let author="مجهول";
+  return;
 
-    if(post.identity_mode==="profile")author=post.profiles?.display_name||"كاتب";
+ }
 
-    if(post.identity_mode==="alias")author=post.alias||"اسم مستعار";
+ box.innerHTML=data.map(p=>{
 
-    const date=new Date(post.created_at).toLocaleDateString("ar-IQ");
+  let author="مجهول";
 
-    return `
+  if(p.identity_mode==="profile")author=p.profiles?.display_name||"كاتب";
 
-      <article class="writing">
+  if(p.identity_mode==="alias")author=p.alias||"اسم مستعار";
 
-        <div class="meta">${escapeHTML(author)} · ${escapeHTML(post.category)} · ${date}</div>
+  const date=new Date(p.created_at).toLocaleDateString("ar-IQ");
 
-        <h3>${escapeHTML(post.title||"بدون عنوان")}</h3>
+  return `<article class="writing">
 
-        <p>${escapeHTML(post.body)}</p>
+   <div class="meta">${safe(author)} · ${safe(p.category)} · ${safe(date)}</div>
 
-      </article>`;
+   <h3>${safe(p.title||"بدون عنوان")}</h3>
 
-  }).join("");
+   <p>${safe(p.body)}</p>
 
-}
+  </article>`;
 
-async function startApp(){
-
-  const {data}=await db.auth.getSession();
-
-  currentUser=data.session?.user||null;
-
-  updateInterface();
-
-  if(currentUser)await loadProfile();
-
-  await loadWritings();
+ }).join("");
 
 }
 
 function updateInterface(){
 
-  document.getElementById("loginButton").classList.toggle("hidden",!!currentUser);
+ document.getElementById("loginButton").classList.toggle("hidden",!!currentUser);
 
-  document.getElementById("logoutButton").classList.toggle("hidden",!currentUser);
+ document.getElementById("logoutButton").classList.toggle("hidden",!currentUser);
 
-  document.getElementById("writePanel").classList.toggle("hidden",!currentUser);
+ document.getElementById("writePanel").classList.toggle("hidden",!currentUser);
 
-  document.getElementById("profilePanel").classList.toggle("hidden",!currentUser);
-
-  document.getElementById("loginPanel").classList.add("hidden");
+ document.getElementById("profilePanel").classList.toggle("hidden",!currentUser);
 
 }
 
-db.auth.onAuthStateChange(async (_event,session)=>{
+async function start(){
 
-  currentUser=session?.user||null;
+ const {data,error}=await db.auth.getSession();
 
-  updateInterface();
+ if(error){document.getElementById("posts").textContent="تعذر الاتصال بالحساب.";return;}
 
-  if(currentUser)await loadProfile();
+ currentUser=data.session?.user||null;
+
+ updateInterface();
+
+ if(currentUser)await loadProfile();
+
+ await loadWritings();
+
+}
+
+db.auth.onAuthStateChange((_event,session)=>{
+
+ currentUser=session?.user||null;
+
+ updateInterface();
 
 });
 
-startApp();
+start();
 
 </script>
 
