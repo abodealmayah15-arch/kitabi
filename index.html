@@ -1,93 +1,467 @@
 <!DOCTYPE html>
+
 <html lang="ar" dir="rtl">
+
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>كتابي | حكايتك تستحق أن تُكتب</title>
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>كتابي | مساحتك الخاصة للكتابة</title>
+
 <style>
+
 *{box-sizing:border-box}
-body{margin:0;background:#faf9f5;color:#26372e;font-family:Cairo,Arial}
-header{background:white;padding:15px 7%;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #eee}
-.logo{font-size:27px;font-weight:800;color:#245b49}
-nav a{margin:0 10px;text-decoration:none;color:#52665a}
-main{max-width:1000px;margin:35px auto;padding:0 18px}
-.hero{background:linear-gradient(130deg,#e9f2eb,#f7f0e5);padding:40px;border-radius:22px}
-h1{font-size:36px;line-height:1.6}
-p{line-height:2;color:#68766d}
-button{background:#245b49;color:white;border:0;padding:12px 22px;border-radius:10px;font-family:Cairo;cursor:pointer}
-.panel{background:white;padding:24px;border-radius:17px;margin-top:25px;border:1px solid #e8e9e3}
-input,textarea,select{width:100%;padding:12px;margin:8px 0 15px;border:1px solid #ddd;border-radius:10px;font-family:Cairo}
-textarea{height:150px}
-.books{display:grid;grid-template-columns:1fr 1fr;gap:15px}
-.book{background:white;padding:20px;border:1px solid #eee;border-radius:15px}
-@media(max-width:650px){.books{grid-template-columns:1fr}h1{font-size:27px}nav a{font-size:12px;margin:0 3px}}
+
+body{margin:0;background:#f5f3ef;color:#252525;font-family:Tahoma,Arial,sans-serif}
+
+header{background:#202d3b;color:white;padding:22px 6%;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+
+.logo{font-size:27px;font-weight:bold}
+
+header small{color:#d5dce3}
+
+button{border:0;border-radius:8px;padding:11px 18px;cursor:pointer;font-size:14px;font-family:inherit}
+
+.primary{background:#b18a54;color:white}
+
+.secondary{background:#e9e5dd;color:#333}
+
+main{max-width:900px;margin:30px auto;padding:0 16px}
+
+.hero{background:white;padding:35px 25px;border-radius:14px;text-align:center;margin-bottom:22px;border:1px solid #e9e4dc}
+
+.hero h1{margin:0 0 12px;color:#263748}
+
+.hero p{color:#777;line-height:1.9}
+
+.panel{background:white;border:1px solid #e9e4dc;border-radius:12px;padding:22px;margin-bottom:20px}
+
+h2{font-size:20px;margin-top:0;color:#263748}
+
+input,textarea,select{width:100%;padding:13px;margin:7px 0 14px;border:1px solid #ddd;border-radius:8px;font-family:inherit;font-size:15px;background:#fff}
+
+textarea{min-height:150px;resize:vertical;line-height:1.8}
+
+label{font-size:14px;color:#555}
+
+.writing{background:white;border:1px solid #e9e4dc;border-radius:12px;padding:20px;margin-bottom:14px}
+
+.writing h3{margin-top:0;color:#263748}
+
+.writing p{line-height:2;white-space:pre-wrap}
+
+.meta{font-size:12px;color:#888;margin-bottom:12px}
+
+.notice{padding:12px;border-radius:8px;background:#f4f0e8;color:#685536;margin:12px 0;line-height:1.7}
+
+.hidden{display:none}
+
+footer{text-align:center;padding:30px;color:#888;font-size:12px}
+
+.actions{display:flex;gap:8px;flex-wrap:wrap}
+
 </style>
+
 </head>
+
 <body>
+
 <header>
-<div class="logo">كتابي</div>
-<nav>
-<a href="#home">الرئيسية</a>
-<a href="#discover">اكتشف</a>
-<a href="#write">اكتب</a>
-</nav>
+
+  <div>
+
+    <div class="logo">كتابي</div>
+
+    <small>كل إنسان لديه حكاية تستحق أن تُروى</small>
+
+  </div>
+
+  <div class="actions">
+
+    <button class="secondary" onclick="scrollToSection('writings')">اكتشف الكتابات</button>
+
+    <button class="primary" id="loginButton" onclick="showLogin()">تسجيل الدخول</button>
+
+    <button class="secondary hidden" id="logoutButton" onclick="logout()">تسجيل الخروج</button>
+
+  </div>
+
 </header>
 
 <main>
-<section class="hero" id="home">
-<h1>كل إنسان عنده حكاية...<br>وهنا مكانها.</h1>
-<p>مساحة مفتوحة لكل شخص حتى يكتب أفكاره وذكرياته وتجربته بالحياة.</p>
-<button onclick="document.getElementById('write').scrollIntoView({behavior:'smooth'})">ابدأ الكتابة</button>
-</section>
 
-<section class="panel" id="write">
-<h2>أضف كتابة إلى كتابك</h2>
-<label>عنوان الكتابة</label>
-<input id="title" placeholder="عنوان كتابتك">
-<label>محتوى الكتابة</label>
-<textarea id="content" placeholder="اكتب حكايتك هنا..."></textarea>
-<label>طريقة ظهور اسمك</label>
-<select id="identity">
-<option>باسمي</option>
-<option>اسم مستعار</option>
-<option>مجهول</option>
-</select>
-<button onclick="publish()">نشر الكتابة</button>
-<p id="message"></p>
-</section>
+  <section class="hero">
 
-<section id="discover">
-<h2>كتابات المجتمع</h2>
-<div class="books" id="books">
-<div class="book">مرحباً بك في كتابي. كن أول من يكتب حكايته.</div>
-</div>
-</section>
+    <h1>أهلاً بك في كتابي</h1>
+
+    <p>مساحتك لتكتب أفكارك، وتحفظ ذكرياتك، وتشارك تجاربك مع الآخرين.<br>كل كتابة هي صفحة من حكايتك.</p>
+
+    <button class="primary" onclick="scrollToSection('writePanel')">ابدأ بكتابة قصتك</button>
+
+  </section>
+
+  <section class="panel hidden" id="loginPanel">
+
+    <h2>تسجيل الدخول</h2>
+
+    <p>اكتب بريدك الإلكتروني وسنرسل إليك رابط الدخول.</p>
+
+    <label>البريد الإلكتروني</label>
+
+    <input type="email" id="email" placeholder="example@email.com">
+
+    <button class="primary" onclick="login()">إرسال رابط الدخول</button>
+
+    <div id="loginMessage" class="notice hidden"></div>
+
+  </section>
+
+  <section class="panel hidden" id="profilePanel">
+
+    <h2>ملفي الشخصي</h2>
+
+    <label>الاسم الذي سيظهر للقراء</label>
+
+    <input id="displayName" placeholder="اكتب اسمك">
+
+    <label>معرّف إنستغرام (اختياري، دون @)</label>
+
+    <input id="instagram" placeholder="username">
+
+    <label>نبذة قصيرة عنك</label>
+
+    <input id="bio" placeholder="اكتب نبذة بسيطة">
+
+    <button class="primary" onclick="saveProfile()">حفظ بياناتي</button>
+
+    <div id="profileMessage" class="notice hidden"></div>
+
+  </section>
+
+  <section class="panel hidden" id="writePanel">
+
+    <h2>أضف صفحة جديدة إلى كتابك</h2>
+
+    <label>عنوان الكتابة</label>
+
+    <input id="title" maxlength="150" placeholder="عنوان قصتك أو فكرتك">
+
+    <label>التصنيف</label>
+
+    <select id="category">
+
+      <option>خواطر</option>
+
+      <option>الحياة</option>
+
+      <option>التجارب</option>
+
+      <option>الذكريات</option>
+
+      <option>الحب</option>
+
+      <option>النجاح</option>
+
+      <option>رسائل</option>
+
+      <option>أخرى</option>
+
+    </select>
+
+    <label>نشر الكتابة باسم</label>
+
+    <select id="identity">
+
+      <option value="profile">اسمي الشخصي</option>
+
+      <option value="alias">اسم مستعار</option>
+
+      <option value="anonymous">مجهول</option>
+
+    </select>
+
+    <div id="aliasBox" class="hidden">
+
+      <label>الاسم المستعار</label>
+
+      <input id="alias" placeholder="اكتب الاسم المستعار">
+
+    </div>
+
+    <label>نص الكتابة</label>
+
+    <textarea id="body" placeholder="اكتب ما تريد مشاركته..."></textarea>
+
+    <button class="primary" onclick="publish()">نشر الكتابة</button>
+
+    <div id="publishMessage" class="notice hidden"></div>
+
+  </section>
+
+  <section id="writings">
+
+    <h2>أحدث الكتابات</h2>
+
+    <div id="posts">
+
+      <div class="notice">جارٍ تحميل الكتابات...</div>
+
+    </div>
+
+  </section>
+
 </main>
 
+<footer>كتابي © 2026 — مساحة لكل حكاية</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="config.js"></script>
+
 <script>
-function publish(){
-const title=document.getElementById('title').value.trim();
-const content=document.getElementById('content').value.trim();
-const identity=document.getElementById('identity').value;
-if(!content){
-document.getElementById('message').innerText='اكتب شيئاً قبل النشر.';
-return;
+
+const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+let currentUser = null;
+
+function scrollToSection(id){
+
+  document.getElementById(id).scrollIntoView({behavior:"smooth"});
+
 }
-const book=document.createElement('div');
-book.className='book';
-const heading=document.createElement('h3');
-heading.textContent=title||'بدون عنوان';
-const paragraph=document.createElement('p');
-paragraph.textContent=content;
-const author=document.createElement('small');
-author.textContent='الكاتب: '+identity;
-book.append(heading,paragraph,author);
-document.getElementById('books').prepend(book);
-document.getElementById('title').value='';
-document.getElementById('content').value='';
-document.getElementById('message').innerText='تمت إضافة كتابتك للعرض التجريبي.';
+
+function message(id,text){
+
+  const el=document.getElementById(id);
+
+  el.textContent=text;
+
+  el.classList.remove("hidden");
+
 }
+
+function showLogin(){
+
+  document.getElementById("loginPanel").classList.toggle("hidden");
+
+  scrollToSection("loginPanel");
+
+}
+
+document.getElementById("identity").addEventListener("change",function(){
+
+  document.getElementById("aliasBox").classList.toggle("hidden",this.value!=="alias");
+
+});
+
+async function login(){
+
+  const email=document.getElementById("email").value.trim();
+
+  if(!email){message("loginMessage","يرجى كتابة البريد الإلكتروني.");return;}
+
+  const {error}=await db.auth.signInWithOtp({
+
+    email,
+
+    options:{emailRedirectTo:window.location.href}
+
+  });
+
+  if(error){message("loginMessage","تعذر إرسال الرابط: "+error.message);}
+
+  else{message("loginMessage","تم إرسال رابط الدخول إلى بريدك الإلكتروني. افتح الرسالة واضغط الرابط.");}
+
+}
+
+async function logout(){
+
+  await db.auth.signOut();
+
+  location.reload();
+
+}
+
+async function loadProfile(){
+
+  if(!currentUser)return;
+
+  const {data}=await db.from("profiles")
+
+    .select("display_name,instagram_username,bio")
+
+    .eq("id",currentUser.id).maybeSingle();
+
+  if(data){
+
+    document.getElementById("displayName").value=data.display_name||"";
+
+    document.getElementById("instagram").value=data.instagram_username||"";
+
+    document.getElementById("bio").value=data.bio||"";
+
+  }
+
+}
+
+async function saveProfile(){
+
+  if(!currentUser)return;
+
+  const display_name=document.getElementById("displayName").value.trim();
+
+  const instagram_username=document.getElementById("instagram").value.trim()||null;
+
+  const bio=document.getElementById("bio").value.trim();
+
+  if(!display_name){message("profileMessage","يرجى كتابة اسم العرض.");return;}
+
+  const {error}=await db.from("profiles").update({
+
+    display_name,instagram_username,bio
+
+  }).eq("id",currentUser.id);
+
+  if(error)message("profileMessage","تعذر الحفظ: "+error.message);
+
+  else message("profileMessage","تم حفظ بياناتك بنجاح.");
+
+}
+
+async function publish(){
+
+  if(!currentUser){message("publishMessage","سجّل الدخول أولاً حتى تتمكن من النشر.");return;}
+
+  const title=document.getElementById("title").value.trim();
+
+  const body=document.getElementById("body").value.trim();
+
+  const category=document.getElementById("category").value;
+
+  const identity_mode=document.getElementById("identity").value;
+
+  const alias=document.getElementById("alias").value.trim();
+
+  if(!body){message("publishMessage","اكتب نص الكتابة أولاً.");return;}
+
+  if(identity_mode==="alias"&&!alias){message("publishMessage","يرجى كتابة الاسم المستعار.");return;}
+
+  const {error}=await db.from("writings").insert({
+
+    user_id:currentUser.id,title,body,category,identity_mode,
+
+    alias:identity_mode==="alias"?alias:null
+
+  });
+
+  if(error){message("publishMessage","تعذر النشر: "+error.message);return;}
+
+  message("publishMessage","تم نشر كتابتك بنجاح.");
+
+  document.getElementById("title").value="";
+
+  document.getElementById("body").value="";
+
+  document.getElementById("alias").value="";
+
+  await loadWritings();
+
+}
+
+function escapeHTML(value){
+
+  return String(value??"").replace(/[&<>"']/g,function(c){
+
+    return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c];
+
+  });
+
+}
+
+async function loadWritings(){
+
+  const container=document.getElementById("posts");
+
+  const {data,error}=await db.from("writings")
+
+    .select("id,title,body,category,identity_mode,alias,created_at,profiles(display_name)")
+
+    .order("created_at",{ascending:false});
+
+  if(error){container.innerHTML='<div class="notice">تعذر تحميل الكتابات. '+escapeHTML(error.message)+'</div>';return;}
+
+  if(!data||data.length===0){container.innerHTML='<div class="notice">لا توجد كتابات منشورة حالياً. كن أول من يكتب حكايته.</div>';return;}
+
+  container.innerHTML=data.map(post=>{
+
+    let author="مجهول";
+
+    if(post.identity_mode==="profile")author=post.profiles?.display_name||"كاتب";
+
+    if(post.identity_mode==="alias")author=post.alias||"اسم مستعار";
+
+    const date=new Date(post.created_at).toLocaleDateString("ar-IQ");
+
+    return `
+
+      <article class="writing">
+
+        <div class="meta">${escapeHTML(author)} · ${escapeHTML(post.category)} · ${date}</div>
+
+        <h3>${escapeHTML(post.title||"بدون عنوان")}</h3>
+
+        <p>${escapeHTML(post.body)}</p>
+
+      </article>`;
+
+  }).join("");
+
+}
+
+async function startApp(){
+
+  const {data}=await db.auth.getSession();
+
+  currentUser=data.session?.user||null;
+
+  updateInterface();
+
+  if(currentUser)await loadProfile();
+
+  await loadWritings();
+
+}
+
+function updateInterface(){
+
+  document.getElementById("loginButton").classList.toggle("hidden",!!currentUser);
+
+  document.getElementById("logoutButton").classList.toggle("hidden",!currentUser);
+
+  document.getElementById("writePanel").classList.toggle("hidden",!currentUser);
+
+  document.getElementById("profilePanel").classList.toggle("hidden",!currentUser);
+
+  document.getElementById("loginPanel").classList.add("hidden");
+
+}
+
+db.auth.onAuthStateChange(async (_event,session)=>{
+
+  currentUser=session?.user||null;
+
+  updateInterface();
+
+  if(currentUser)await loadProfile();
+
+});
+
+startApp();
+
 </script>
+
 </body>
+
 </html>
