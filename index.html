@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>كتابي | حكايتك تستحق أن تُكتب</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#faf9f5;color:#26372e;font-family:Cairo,Arial}
+header{background:white;padding:15px 7%;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #eee}
+.logo{font-size:27px;font-weight:800;color:#245b49}
+nav a{margin:0 10px;text-decoration:none;color:#52665a}
+main{max-width:1000px;margin:35px auto;padding:0 18px}
+.hero{background:linear-gradient(130deg,#e9f2eb,#f7f0e5);padding:40px;border-radius:22px}
+h1{font-size:36px;line-height:1.6}
+p{line-height:2;color:#68766d}
+button{background:#245b49;color:white;border:0;padding:12px 22px;border-radius:10px;font-family:Cairo;cursor:pointer}
+.panel{background:white;padding:24px;border-radius:17px;margin-top:25px;border:1px solid #e8e9e3}
+input,textarea,select{width:100%;padding:12px;margin:8px 0 15px;border:1px solid #ddd;border-radius:10px;font-family:Cairo}
+textarea{height:150px}
+.books{display:grid;grid-template-columns:1fr 1fr;gap:15px}
+.book{background:white;padding:20px;border:1px solid #eee;border-radius:15px}
+@media(max-width:650px){.books{grid-template-columns:1fr}h1{font-size:27px}nav a{font-size:12px;margin:0 3px}}
+</style>
+</head>
+<body>
+<header>
+<div class="logo">كتابي</div>
+<nav>
+<a href="#home">الرئيسية</a>
+<a href="#discover">اكتشف</a>
+<a href="#write">اكتب</a>
+</nav>
+</header>
+
+<main>
+<section class="hero" id="home">
+<h1>كل إنسان عنده حكاية...<br>وهنا مكانها.</h1>
+<p>مساحة مفتوحة لكل شخص حتى يكتب أفكاره وذكرياته وتجربته بالحياة.</p>
+<button onclick="document.getElementById('write').scrollIntoView({behavior:'smooth'})">ابدأ الكتابة</button>
+</section>
+
+<section class="panel" id="write">
+<h2>أضف كتابة إلى كتابك</h2>
+<label>عنوان الكتابة</label>
+<input id="title" placeholder="عنوان كتابتك">
+<label>محتوى الكتابة</label>
+<textarea id="content" placeholder="اكتب حكايتك هنا..."></textarea>
+<label>طريقة ظهور اسمك</label>
+<select id="identity">
+<option>باسمي</option>
+<option>اسم مستعار</option>
+<option>مجهول</option>
+</select>
+<button onclick="publish()">نشر الكتابة</button>
+<p id="message"></p>
+</section>
+
+<section id="discover">
+<h2>كتابات المجتمع</h2>
+<div class="books" id="books">
+<div class="book">مرحباً بك في كتابي. كن أول من يكتب حكايته.</div>
+</div>
+</section>
+</main>
+
+<script>
+function publish(){
+const title=document.getElementById('title').value.trim();
+const content=document.getElementById('content').value.trim();
+const identity=document.getElementById('identity').value;
+if(!content){
+document.getElementById('message').innerText='اكتب شيئاً قبل النشر.';
+return;
+}
+const book=document.createElement('div');
+book.className='book';
+const heading=document.createElement('h3');
+heading.textContent=title||'بدون عنوان';
+const paragraph=document.createElement('p');
+paragraph.textContent=content;
+const author=document.createElement('small');
+author.textContent='الكاتب: '+identity;
+book.append(heading,paragraph,author);
+document.getElementById('books').prepend(book);
+document.getElementById('title').value='';
+document.getElementById('content').value='';
+document.getElementById('message').innerText='تمت إضافة كتابتك للعرض التجريبي.';
+}
+</script>
+</body>
+</html>
