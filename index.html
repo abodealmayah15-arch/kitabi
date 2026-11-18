@@ -8,7 +8,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>كتابي | كل حكاية تستحق أن تُروى</title>
+<title>كتابي</title>
 
 <style>
 
@@ -20,19 +20,17 @@ header{background:#202d3b;color:white;padding:20px 6%;display:flex;justify-conte
 
 .logo{font-size:28px;font-weight:bold}
 
-header small{color:#d5dce3}
+main{max-width:850px;margin:30px auto;padding:0 15px}
 
-main{max-width:900px;margin:30px auto;padding:0 15px}
-
-button{border:0;border-radius:8px;padding:12px 18px;cursor:pointer;font-family:inherit;font-size:14px}
+button{border:0;border-radius:8px;padding:12px 18px;cursor:pointer;font-family:inherit}
 
 .primary{background:#ad8752;color:white}
 
 .secondary{background:#e9e5dd;color:#333}
 
-.panel,.hero,.writing{background:white;border:1px solid #e9e4dc;border-radius:13px;padding:23px;margin-bottom:20px}
+.panel,.hero,.writing{background:white;border:1px solid #e9e4dc;border-radius:13px;padding:22px;margin-bottom:18px}
 
-.hero{text-align:center;padding:38px 20px}
+.hero{text-align:center;padding:35px 20px}
 
 .hero h1{color:#263748}
 
@@ -42,11 +40,11 @@ h2{font-size:20px;color:#263748;margin-top:0}
 
 input,textarea,select{width:100%;padding:13px;margin:8px 0 15px;border:1px solid #ddd;border-radius:8px;font-family:inherit;font-size:15px}
 
-textarea{min-height:150px;line-height:1.9;resize:vertical}
+textarea{min-height:145px;line-height:1.9}
 
 label{font-size:14px;color:#555}
 
-.notice{background:#f4f0e8;color:#685536;padding:12px;border-radius:8px;margin-top:12px;line-height:1.8}
+.notice{background:#f4f0e8;color:#685536;padding:12px;border-radius:8px;margin-top:12px;line-height:1.8;overflow-wrap:anywhere}
 
 .hidden{display:none!important}
 
@@ -58,7 +56,7 @@ label{font-size:14px;color:#555}
 
 .meta{color:#888;font-size:12px;margin-bottom:12px}
 
-footer{text-align:center;color:#888;padding:30px;font-size:12px}
+footer{text-align:center;color:#888;padding:30px}
 
 </style>
 
@@ -68,153 +66,143 @@ footer{text-align:center;color:#888;padding:30px;font-size:12px}
 
 <header>
 
-  <div>
+ <div>
 
-    <div class="logo">كتابي</div>
+  <div class="logo">كتابي</div>
 
-    <small>كل إنسان لديه حكاية تستحق أن تُروى</small>
+  <small>كل حكاية تستحق أن تُروى</small>
 
-  </div>
+ </div>
 
-  <div class="actions">
+ <div class="actions">
 
-    <button class="secondary" onclick="go('writings')">اكتشف الكتابات</button>
+  <button class="secondary" onclick="go('writings')">اكتشف</button>
 
-    <button class="primary" id="loginButton" onclick="toggleLogin()">دخول / إنشاء حساب</button>
+  <button class="primary" id="loginButton" onclick="toggleLogin()">دخول / حساب جديد</button>
 
-    <button class="secondary hidden" id="logoutButton" onclick="logout()">خروج</button>
+  <button class="secondary hidden" id="logoutButton" onclick="logout()">خروج</button>
 
-  </div>
+ </div>
 
 </header>
 
 <main>
 
-  <section class="hero">
+ <section class="hero">
 
-    <h1>أهلاً بك في كتابي</h1>
+  <h1>أهلاً بك في كتابي</h1>
 
-    <p>مساحتك لتكتب أفكارك، وتحفظ ذكرياتك، وتشارك تجاربك مع الآخرين.</p>
+  <p>مساحتك لتكتب أفكارك وذكرياتك وتجاربك وتشاركها مع الآخرين.</p>
 
-    <button class="primary" onclick="go('writePanel')">اكتب حكايتك</button>
+  <button class="primary" onclick="go('writePanel')">اكتب حكايتك</button>
 
-  </section>
+ </section>
 
-  <section class="panel hidden" id="loginPanel">
+ <section class="panel hidden" id="loginPanel">
 
-    <h2>حسابك في كتابي</h2>
+  <h2>حسابك في كتابي</h2>
 
-    <label>اسم حساب إنستغرام (بدون @)</label>
+  <label>اسم حساب إنستغرام بدون @</label>
 
-    <input id="username" maxlength="30" placeholder="مثلاً ahmed_iraq" autocomplete="username">
+  <input id="username" maxlength="30" placeholder="مثلاً ahmed_iraq">
 
-    <label>كلمة المرور</label>
+  <label>كلمة المرور (8 أحرف على الأقل)</label>
 
-    <input id="password" type="password" placeholder="كلمة المرور" autocomplete="current-password">
+  <input id="password" type="password" autocomplete="current-password" placeholder="كلمة المرور">
 
-    <div class="actions">
+  <div class="actions">
 
-      <button class="primary" onclick="register()">إنشاء حساب جديد</button>
+   <button class="primary" onclick="register()">إنشاء حساب</button>
 
-      <button class="secondary" onclick="login()">دخول</button>
+   <button class="secondary" onclick="login()">دخول</button>
 
-    </div>
+  </div>
 
-    <div id="loginMessage" class="notice hidden"></div>
+  <div id="loginMessage" class="notice hidden"></div>
 
-    <p style="font-size:12px;color:#888;line-height:1.8">اختر كلمة مرور قوية واحتفظ بها؛ لا يوجد استرجاع عبر البريد الإلكتروني في هذا النظام.</p>
+  <p style="font-size:12px;color:#888;line-height:1.8">احتفظ بكلمة المرور، ولا تشاركها مع أحد. اسم إنستغرام هنا ليس إثباتاً لملكية الحساب.</p>
 
-  </section>
+ </section>
 
-  <section class="panel hidden" id="profilePanel">
+ <section class="panel hidden" id="profilePanel">
 
-    <h2>ملفي الشخصي</h2>
+  <h2>ملفي الشخصي</h2>
 
-    <label>الاسم الذي يظهر للقراء</label>
+  <label>الاسم الظاهر للقراء</label>
 
-    <input id="displayName" placeholder="اسمك">
+  <input id="displayName" placeholder="اسمك">
 
-    <label>نبذة عنك</label>
+  <label>نبذة عنك</label>
 
-    <input id="bio" placeholder="اكتب نبذة قصيرة">
+  <input id="bio" placeholder="نبذة قصيرة">
 
-    <button class="primary" onclick="saveProfile()">حفظ الملف الشخصي</button>
+  <button class="primary" onclick="saveProfile()">حفظ</button>
 
-    <div id="profileMessage" class="notice hidden"></div>
+  <div id="profileMessage" class="notice hidden"></div>
 
-  </section>
+ </section>
 
-  <section class="panel hidden" id="writePanel">
+ <section class="panel hidden" id="writePanel">
 
-    <h2>أضف صفحة جديدة إلى كتابك</h2>
+  <h2>أضف صفحة إلى كتابك</h2>
 
-    <label>عنوان الكتابة</label>
+  <label>عنوان الكتابة</label>
 
-    <input id="title" maxlength="150" placeholder="عنوان قصتك">
+  <input id="title" maxlength="150" placeholder="عنوان قصتك">
 
-    <label>التصنيف</label>
+  <label>التصنيف</label>
 
-    <select id="category">
+  <select id="category">
 
-      <option>خواطر</option>
+   <option>خواطر</option><option>الحياة</option><option>التجارب</option>
 
-      <option>الحياة</option>
+   <option>الذكريات</option><option>الحب</option><option>النجاح</option>
 
-      <option>التجارب</option>
+   <option>رسائل</option><option>أخرى</option>
 
-      <option>الذكريات</option>
+  </select>
 
-      <option>الحب</option>
+  <label>انشر باسم</label>
 
-      <option>النجاح</option>
+  <select id="identity">
 
-      <option>رسائل</option>
+   <option value="profile">اسمي الشخصي</option>
 
-      <option>أخرى</option>
+   <option value="alias">اسم مستعار</option>
 
-    </select>
+   <option value="anonymous">مجهول</option>
 
-    <label>انشر باسم</label>
+  </select>
 
-    <select id="identity">
+  <div id="aliasBox" class="hidden">
 
-      <option value="profile">اسمي الشخصي</option>
+   <label>الاسم المستعار</label>
 
-      <option value="alias">اسم مستعار</option>
+   <input id="alias" placeholder="اسم مستعار">
 
-      <option value="anonymous">مجهول</option>
+  </div>
 
-    </select>
+  <label>نص الكتابة</label>
 
-    <div id="aliasBox" class="hidden">
+  <textarea id="body" placeholder="اكتب حكايتك هنا..."></textarea>
 
-      <label>الاسم المستعار</label>
+  <button class="primary" onclick="publish()">نشر الكتابة</button>
 
-      <input id="alias" placeholder="اسمك المستعار">
+  <div id="publishMessage" class="notice hidden"></div>
 
-    </div>
+ </section>
 
-    <label>نص الكتابة</label>
+ <section id="writings">
 
-    <textarea id="body" placeholder="اكتب ما تريد مشاركته..."></textarea>
+  <h2>أحدث الكتابات</h2>
 
-    <button class="primary" onclick="publish()">نشر الكتابة</button>
+  <div id="posts"><div class="notice">جارٍ تحميل الكتابات...</div></div>
 
-    <div id="publishMessage" class="notice hidden"></div>
-
-  </section>
-
-  <section id="writings">
-
-    <h2>أحدث الكتابات</h2>
-
-    <div id="posts"><div class="notice">جارٍ تحميل الكتابات...</div></div>
-
-  </section>
+ </section>
 
 </main>
 
-<footer>كتابي © 2026 — مساحة لكل حكاية</footer>
+<footer>كتابي © 2026</footer>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -222,11 +210,9 @@ footer{text-align:center;color:#888;padding:30px;font-size:12px}
 
 <script>
 
-const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-const INTERNAL_DOMAIN="login.kitabi.invalid";
-
-let currentUser=null;
+let currentUser = null;
 
 function go(id){
 
@@ -234,17 +220,17 @@ function go(id){
 
 }
 
-function showMessage(id,msg){
+function msg(id,text){
 
  const el=document.getElementById(id);
 
- el.textContent=msg;
+ el.textContent=text;
 
  el.classList.remove("hidden");
 
 }
 
-function hideMessage(id){
+function hide(id){
 
  document.getElementById(id).classList.add("hidden");
 
@@ -258,7 +244,7 @@ function toggleLogin(){
 
 }
 
-function getCredentials(){
+function credentials(){
 
  const username=document.getElementById("username").value.trim().toLowerCase();
 
@@ -266,7 +252,7 @@ function getCredentials(){
 
  if(!/^[a-z0-9._]{1,30}$/.test(username)){
 
-  throw new Error("اكتب اسم مستخدم صحيحاً بحروف إنجليزية أو أرقام أو نقطة أو شرطة سفلية.");
+  throw new Error("اكتب اسم المستخدم بحروف إنجليزية أو أرقام أو نقطة أو شرطة سفلية.");
 
  }
 
@@ -276,7 +262,15 @@ function getCredentials(){
 
  }
 
- return {username,password,email:username+"@"+INTERNAL_DOMAIN};
+ return {
+
+  username:username,
+
+  password:password,
+
+  email:username+"@login.kitabi.invalid"
+
+ };
 
 }
 
@@ -288,11 +282,11 @@ document.getElementById("identity").addEventListener("change",function(){
 
 async function register(){
 
- hideMessage("loginMessage");
+ hide("loginMessage");
 
  try{
 
-  const c=getCredentials();
+  const c=credentials();
 
   const {data,error}=await db.auth.signUp({
 
@@ -306,11 +300,13 @@ async function register(){
 
   if(!data.session){
 
-   showMessage("loginMessage","لم يتم تسجيل الدخول تلقائياً. تحقق من إعداد تأكيد البريد في Supabase.");
+   msg("loginMessage","الحساب لم يدخل تلقائياً. تأكد من تعطيل تأكيد البريد الإلكتروني في Supabase.");
 
    return;
 
   }
+
+  currentUser=data.user;
 
   const {error:profileError}=await db.from("profiles").update({
 
@@ -318,23 +314,21 @@ async function register(){
 
    display_name:c.username
 
-  }).eq("id",data.user.id);
+  }).eq("id",currentUser.id);
 
   if(profileError)throw profileError;
 
-  showMessage("loginMessage","تم إنشاء حسابك بنجاح!");
-
-  currentUser=data.user;
-
-  updateInterface();
+  updateUI();
 
   await loadProfile();
 
   await loadWritings();
 
+  msg("loginMessage","تم إنشاء الحساب والدخول بنجاح.");
+
  }catch(e){
 
-  showMessage("loginMessage","تعذر إنشاء الحساب: "+e.message);
+  msg("loginMessage","تعذر إنشاء الحساب: "+e.message);
 
  }
 
@@ -342,11 +336,11 @@ async function register(){
 
 async function login(){
 
- hideMessage("loginMessage");
+ hide("loginMessage");
 
  try{
 
-  const c=getCredentials();
+  const c=credentials();
 
   const {data,error}=await db.auth.signInWithPassword({
 
@@ -360,17 +354,17 @@ async function login(){
 
   currentUser=data.user;
 
-  updateInterface();
+  updateUI();
 
   await loadProfile();
 
   await loadWritings();
 
-  showMessage("loginMessage","تم تسجيل الدخول بنجاح.");
+  msg("loginMessage","تم تسجيل الدخول بنجاح.");
 
  }catch(e){
 
-  showMessage("loginMessage","تعذر الدخول: "+e.message);
+  msg("loginMessage","تعذر الدخول: "+e.message);
 
  }
 
@@ -382,7 +376,7 @@ async function logout(){
 
  currentUser=null;
 
- updateInterface();
+ updateUI();
 
  location.reload();
 
@@ -398,7 +392,7 @@ async function loadProfile(){
 
   .eq("id",currentUser.id).maybeSingle();
 
- if(error){showMessage("profileMessage",error.message);return;}
+ if(error){msg("profileMessage",error.message);return;}
 
  if(data){
 
@@ -418,23 +412,23 @@ async function saveProfile(){
 
  const bio=document.getElementById("bio").value.trim();
 
- if(!display_name){showMessage("profileMessage","اكتب اسم العرض أولاً.");return;}
+ if(!display_name){msg("profileMessage","اكتب اسم العرض أولاً.");return;}
 
  const {error}=await db.from("profiles").update({display_name,bio})
 
   .eq("id",currentUser.id);
 
- if(error)showMessage("profileMessage","تعذر الحفظ: "+error.message);
+ if(error)msg("profileMessage","تعذر الحفظ: "+error.message);
 
- else showMessage("profileMessage","تم حفظ بياناتك.");
+ else msg("profileMessage","تم حفظ بياناتك.");
 
 }
 
 async function publish(){
 
- hideMessage("publishMessage");
+ hide("publishMessage");
 
- if(!currentUser){showMessage("publishMessage","سجّل الدخول أولاً.");return;}
+ if(!currentUser){msg("publishMessage","سجّل الدخول أولاً.");return;}
 
  const title=document.getElementById("title").value.trim();
 
@@ -446,9 +440,9 @@ async function publish(){
 
  const alias=document.getElementById("alias").value.trim();
 
- if(!body){showMessage("publishMessage","اكتب نص الكتابة أولاً.");return;}
+ if(!body){msg("publishMessage","اكتب نص الكتابة أولاً.");return;}
 
- if(identity_mode==="alias"&&!alias){showMessage("publishMessage","اكتب الاسم المستعار.");return;}
+ if(identity_mode==="alias"&&!alias){msg("publishMessage","اكتب الاسم المستعار.");return;}
 
  const {error}=await db.from("writings").insert({
 
@@ -458,7 +452,7 @@ async function publish(){
 
  });
 
- if(error){showMessage("publishMessage","تعذر النشر: "+error.message);return;}
+ if(error){msg("publishMessage","تعذر النشر: "+error.message);return;}
 
  document.getElementById("title").value="";
 
@@ -466,7 +460,7 @@ async function publish(){
 
  document.getElementById("alias").value="";
 
- showMessage("publishMessage","تم نشر كتابتك بنجاح.");
+ msg("publishMessage","تم نشر كتابتك بنجاح.");
 
  await loadWritings();
 
@@ -492,11 +486,17 @@ async function loadWritings(){
 
   .order("created_at",{ascending:false});
 
- if(error){box.innerHTML='<div class="notice">تعذر تحميل الكتابات: '+safe(error.message)+'</div>';return;}
+ if(error){
+
+  box.textContent="تعذر تحميل الكتابات: "+error.message;
+
+  return;
+
+ }
 
  if(!data||!data.length){
 
-  box.innerHTML='<div class="notice">لا توجد كتابات بعد. كن أول من يشارك حكايته.</div>';
+  box.innerHTML='<div class="notice">لا توجد كتابات منشورة بعد. كن أول من يكتب.</div>';
 
   return;
 
@@ -526,7 +526,7 @@ async function loadWritings(){
 
 }
 
-function updateInterface(){
+function updateUI(){
 
  document.getElementById("loginButton").classList.toggle("hidden",!!currentUser);
 
@@ -540,17 +540,25 @@ function updateInterface(){
 
 async function start(){
 
- const {data,error}=await db.auth.getSession();
+ try{
 
- if(error){document.getElementById("posts").textContent="تعذر الاتصال بالحساب.";return;}
+  const {data,error}=await db.auth.getSession();
 
- currentUser=data.session?.user||null;
+  if(error)throw error;
 
- updateInterface();
+  currentUser=data.session?.user||null;
 
- if(currentUser)await loadProfile();
+  updateUI();
 
- await loadWritings();
+  if(currentUser)await loadProfile();
+
+  await loadWritings();
+
+ }catch(e){
+
+  msg("loginMessage","تعذر الاتصال: "+e.message);
+
+ }
 
 }
 
@@ -558,7 +566,7 @@ db.auth.onAuthStateChange((_event,session)=>{
 
  currentUser=session?.user||null;
 
- updateInterface();
+ updateUI();
 
 });
 
