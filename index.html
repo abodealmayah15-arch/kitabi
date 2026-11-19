@@ -172,6 +172,7 @@ footer{text-align:center;color:var(--muted);padding:32px 15px;font-size:14px}
 </main>
 <footer>كتابي ©️ 2026</footer>
 <div id="measureArea"><div class="measure-page" id="measurePage"></div></div>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.min.js"></script>
 <script src="config.js"></script>
@@ -184,404 +185,492 @@ let pageFlip = null;
 let resizeTimer = null;
 
 function $(id){
-return document.getElementById(id)
+  return document.getElementById(id);
 }
 
 function isMobileReader(){
-return window.innerWidth <= 700
+  return window.innerWidth <= 700;
 }
 
 function go(id){
-if(!$('readerView').classList.contains('hidden'))closeReader(false);
-const el=$(id);
-if(el)el.scrollIntoView({behavior:'smooth'})
+  if(!$('readerView').classList.contains('hidden')) closeReader(false);
+  const el=$(id);
+  if(el) el.scrollIntoView({behavior:'smooth'});
 }
 
 function openLibraryView(){
-closeReader(true);
-$('writings').scrollIntoView({behavior:'smooth'})
+  closeReader(true);
+  $('writings').scrollIntoView({behavior:'smooth'});
 }
 
 function msg(id,text){
-const el=$(id);
-el.textContent=text;
-el.classList.remove('hidden')
+  const el=$(id);
+  el.textContent=text;
+  el.classList.remove('hidden');
 }
 
 function hide(id){
-$(id).classList.add('hidden')
+  $(id).classList.add('hidden');
 }
 
 function toggleLogin(){
-if(!$('readerView').classList.contains('hidden'))closeReader(false);
-$('loginPanel').classList.toggle('hidden');
-go('loginPanel')
+  if(!$('readerView').classList.contains('hidden')) closeReader(false);
+  $('loginPanel').classList.toggle('hidden');
+  go('loginPanel');
 }
 
 function credentials(){
-const username=$('username').value.trim().toLowerCase();
-const password=$('password').value;
-if(!/^[a-z0-9._]{1,30}$/.test(username)){
-throw new Error('اكتب اسم المستخدم بحروف إنجليزية أو أرقام أو نقطة أو شرطة سفلية.')
-}
-if(password.length<8){
-throw new Error('كلمة المرور يجب أن تكون 8 أحرف على الأقل.')
-}
-return{
-username:username,
-password:password,
-email:username+'@login.kitabi.invalid'
-}
+  const username=$('username').value.trim().toLowerCase();
+  const password=$('password').value;
+
+  if(!/^[a-z0-9._]{1,30}$/.test(username)){
+    throw new Error('اكتب اسم المستخدم بحروف إنجليزية أو أرقام أو نقطة أو شرطة سفلية.');
+  }
+
+  if(password.length<8){
+    throw new Error('كلمة المرور يجب أن تكون 8 أحرف على الأقل.');
+  }
+
+  return {
+    username:username,
+    password:password,
+    email:username+'@login.kitabi.invalid'
+  };
 }
 
 $('identity').addEventListener('change',function(){
-$('aliasBox').classList.toggle('hidden',this.value!=='alias')
+  $('aliasBox').classList.toggle('hidden',this.value!=='alias');
 });
 
 async function register(){
-hide('loginMessage');
-try{
-const c=credentials();
-const{data,error}=await db.auth.signUp({
-email:c.email,
-password:c.password
-});
-if(error)throw error;
-if(!data.session){
-msg('loginMessage','الحساب لم يدخل تلقائياً. تأكد من تعطيل تأكيد البريد الإلكتروني في Supabase.');
-return
-}
-currentUser=data.user;
-const{error:profileError}=await db.from('profiles').update({
-instagram_username:c.username,
-display_name:c.username
-}).eq('id',currentUser.id);
-if(profileError)throw profileError;
-updateUI();
-await loadProfile();
-await loadWritings();
-msg('loginMessage','تم إنشاء الحساب والدخول بنجاح.')
-}catch(e){
-msg('loginMessage','تعذر إنشاء الحساب: '+e.message)
-}
+  hide('loginMessage');
+
+  try{
+    const c=credentials();
+    const {data,error}=await db.auth.signUp({
+      email:c.email,
+      password:c.password
+    });
+
+    if(error) throw error;
+
+    if(!data.session){
+      msg('loginMessage','الحساب لم يدخل تلقائياً. تأكد من تعطيل تأكيد البريد الإلكتروني في Supabase.');
+      return;
+    }
+
+    currentUser=data.user;
+
+    const {error:profileError}=await db.from('profiles').update({
+      instagram_username:c.username,
+      display_name:c.username
+    }).eq('id',currentUser.id);
+
+    if(profileError) throw profileError;
+
+    updateUI();
+    await loadProfile();
+    await loadWritings();
+    msg('loginMessage','تم إنشاء الحساب والدخول بنجاح.');
+  }catch(e){
+    msg('loginMessage','تعذر إنشاء الحساب: '+e.message);
+  }
 }
 
 async function login(){
-hide('loginMessage');
-try{
-const c=credentials();
-const{data,error}=await db.auth.signInWithPassword({
-email:c.email,
-password:c.password
-});
-if(error)throw error;
-currentUser=data.user;
-updateUI();
-await loadProfile();
-await loadWritings();
-msg('loginMessage','تم تسجيل الدخول بنجاح.')
-}catch(e){
-msg('loginMessage','تعذر الدخول: '+e.message)
-}
+  hide('loginMessage');
+
+  try{
+    const c=credentials();
+    const {data,error}=await db.auth.signInWithPassword({
+      email:c.email,
+      password:c.password
+    });
+
+    if(error) throw error;
+
+    currentUser=data.user;
+    updateUI();
+    await loadProfile();
+    await loadWritings();
+    msg('loginMessage','تم تسجيل الدخول بنجاح.');
+  }catch(e){
+    msg('loginMessage','تعذر الدخول: '+e.message);
+  }
 }
 
 async function logout(){
-await db.auth.signOut();
-currentUser=null;
-updateUI();
-location.reload()
+  await db.auth.signOut();
+  currentUser=null;
+  updateUI();
+  location.reload();
 }
 
 async function loadProfile(){
-if(!currentUser)return;
-const{data,error}=await db.from('profiles')
-.select('display_name,bio')
-.eq('id',currentUser.id).maybeSingle();
-if(error){msg('profileMessage',error.message);return}
-if(data){
-$('displayName').value=data.display_name||'';
-$('bio').value=data.bio||''
-}
+  if(!currentUser) return;
+
+  const {data,error}=await db.from('profiles')
+    .select('display_name,bio')
+    .eq('id',currentUser.id)
+    .maybeSingle();
+
+  if(error){
+    msg('profileMessage',error.message);
+    return;
+  }
+
+  if(data){
+    $('displayName').value=data.display_name||'';
+    $('bio').value=data.bio||'';
+  }
 }
 
 async function saveProfile(){
-if(!currentUser)return;
-const display_name=$('displayName').value.trim();
-const bio=$('bio').value.trim();
-if(!display_name){msg('profileMessage','اكتب اسم العرض أولاً.');return}
-const{error}=await db.from('profiles').update({display_name,bio})
-.eq('id',currentUser.id);
-if(error)msg('profileMessage','تعذر الحفظ: '+error.message);
-else msg('profileMessage','تم حفظ بياناتك.')
+  if(!currentUser) return;
+
+  const display_name=$('displayName').value.trim();
+  const bio=$('bio').value.trim();
+
+  if(!display_name){
+    msg('profileMessage','اكتب اسم العرض أولاً.');
+    return;
+  }
+
+  const {error}=await db.from('profiles').update({display_name,bio})
+    .eq('id',currentUser.id);
+
+  if(error) msg('profileMessage','تعذر الحفظ: '+error.message);
+  else msg('profileMessage','تم حفظ بياناتك.');
 }
 
 async function publish(){
-hide('publishMessage');
-if(!currentUser){msg('publishMessage','سجّل الدخول أولاً.');return}
-const title=$('title').value.trim();
-const body=$('body').value.trim();
-const category=$('category').value;
-const identity_mode=$('identity').value;
-const alias=$('alias').value.trim();
-if(!body){msg('publishMessage','اكتب نص الكتابة أولاً.');return}
-if(identity_mode==='alias'&&!alias){msg('publishMessage','اكتب الاسم المستعار.');return}
-const{error}=await db.from('writings').insert({
-user_id:currentUser.id,title,body,category,identity_mode,
-alias:identity_mode==='alias'?alias:null
-});
-if(error){
-msg('publishMessage','تعذر النشر: '+error.message);
-return
-}
-$('title').value='';
-$('body').value='';
-$('alias').value='';
-msg('publishMessage','تم نشر كتابتك بنجاح.');
-await loadWritings();
+  hide('publishMessage');
+
+  if(!currentUser){
+    msg('publishMessage','سجّل الدخول أولاً.');
+    return;
+  }
+
+  const title=$('title').value.trim();
+  const body=$('body').value.trim();
+  const category=$('category').value;
+  const identity_mode=$('identity').value;
+  const alias=$('alias').value.trim();
+
+  if(!body){
+    msg('publishMessage','اكتب نص الكتابة أولاً.');
+    return;
+  }
+
+  if(identity_mode==='alias'&&!alias){
+    msg('publishMessage','اكتب الاسم المستعار.');
+    return;
+  }
+
+  const {error}=await db.from('writings').insert({
+    user_id:currentUser.id,
+    title,
+    body,
+    category,
+    identity_mode,
+    alias:identity_mode==='alias'?alias:null
+  });
+
+  if(error){
+    msg('publishMessage','تعذر النشر: '+error.message);
+    return;
+  }
+
+  $('title').value='';
+  $('body').value='';
+  $('alias').value='';
+
+  msg('publishMessage','تم نشر كتابتك بنجاح.');
+  await loadWritings();
 }
 
 function safe(v){
-return String(v??'').replace(/[&<>"']/g,c=>({
-'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
-}[c]))
+  return String(v??'').replace(/[&<>"']/g,c=>({
+    '&':'&amp;',
+    '<':'&lt;',
+    '>':'&gt;',
+    '"':'&quot;',
+    "'":'&#39;'
+  }[c]));
 }
 
 function getAuthorName(p){
-if(p.identity_mode==='profile')return p.profiles?.display_name||'كاتب';
-if(p.identity_mode==='alias')return p.alias||'اسم مستعار';
-return 'مجهول'
+  if(p.identity_mode==='profile') return p.profiles?.display_name||'كاتب';
+  if(p.identity_mode==='alias') return p.alias||'اسم مستعار';
+  return 'مجهول';
 }
 
 function renderLibrary(){
-const box=$('posts');
-const q=$('searchInput').value.trim().toLowerCase();
-const cat=$('categoryFilter').value;
+  const box=$('posts');
+  const q=$('searchInput').value.trim().toLowerCase();
+  const cat=$('categoryFilter').value;
 
-const filtered=allWritings.filter(p=>
-(cat==='ALL'||p.category===cat)&&
-(!q||
-(p.title||'').toLowerCase().includes(q)||
-getAuthorName(p).toLowerCase().includes(q)||
-(p.body||'').toLowerCase().includes(q))
-);
+  const filtered=allWritings.filter(p=>
+    (cat==='ALL'||p.category===cat)&&
+    (!q||
+      (p.title||'').toLowerCase().includes(q)||
+      getAuthorName(p).toLowerCase().includes(q)||
+      (p.body||'').toLowerCase().includes(q)
+    )
+  );
 
-if(!filtered.length){
-box.innerHTML='<div class="notice">لا توجد حكايات مطابقة للبحث أو التصنيف المحدد.</div>';
-return
-}
+  if(!filtered.length){
+    box.innerHTML='<div class="notice">لا توجد حكايات مطابقة للبحث أو التصنيف المحدد.</div>';
+    return;
+  }
 
-box.innerHTML='<div class="books-grid">'+filtered.map(p=>{
-const date=new Date(p.created_at).toLocaleDateString('ar-IQ');
-return `<article class="book-card">
-<div>
-<div class="book-top">
-<span class="book-category">${safe(p.category||'أخرى')}</span>
-<span class="book-date">${safe(date)}</span>
-</div>
-<h3 class="book-title">${safe(p.title||'بدون عنوان')}</h3>
-<p class="book-excerpt">${safe(p.body||'')}</p>
-</div>
-<div class="book-footer">
-<div class="book-author">بقلم: ${safe(getAuthorName(p))}</div>
-<button type="button" class="read-btn" data-id="${safe(p.id)}" onclick="openStoryById(this.dataset.id)">اقرأ الحكاية</button>
-</div>
-</article>`
-}).join('')+'</div>'
+  box.innerHTML='<div class="books-grid">'+filtered.map(p=>{
+    const date=new Date(p.created_at).toLocaleDateString('ar-IQ');
+
+    return `<article class="book-card">
+      <div>
+        <div class="book-top">
+          <span class="book-category">${safe(p.category||'أخرى')}</span>
+          <span class="book-date">${safe(date)}</span>
+        </div>
+        <h3 class="book-title">${safe(p.title||'بدون عنوان')}</h3>
+        <p class="book-excerpt">${safe(p.body||'')}</p>
+      </div>
+      <div class="book-footer">
+        <div class="book-author">بقلم: ${safe(getAuthorName(p))}</div>
+        <button type="button" class="read-btn" data-id="${safe(p.id)}" onclick="openStoryById(this.dataset.id)">اقرأ الحكاية</button>
+      </div>
+    </article>`;
+  }).join('')+'</div>';
 }
 
 async function loadWritings(){
-const box=$('posts');
-const{data,error}=await db.from('writings')
-.select('id,title,body,category,identity_mode,alias,created_at')
-.order('created_at',{ascending:false});
+  const box=$('posts');
+  box.innerHTML='<div class="notice">جارٍ تحميل الكتابات...</div>';
 
-if(error){
-box.textContent='تعذر تحميل الكتابات: '+error.message;
-return
-}
-allWritings=data||[];
-renderLibrary();
-if(!allWritings.length)
-box.innerHTML='<div class="notice">لا توجد كتابات منشورة بعد. كن أول من يكتب.</div>'
+  try{
+    const {data,error}=await db.from('writings')
+      .select('id,title,body,category,identity_mode,alias,created_at')
+      .order('created_at',{ascending:false});
+
+    if(error) throw error;
+
+    allWritings=data||[];
+    renderLibrary();
+
+    if(!allWritings.length){
+      box.innerHTML='<div class="notice">لا توجد كتابات منشورة بعد. كن أول من يكتب.</div>';
+    }
+  }catch(e){
+    box.innerHTML='<div class="notice">تعذر تحميل الكتابات: '+safe(e.message||'خطأ غير معروف')+'</div>';
+    console.error('Kitabi loadWritings error:',e);
+  }
 }
 
 function paginateByRenderedHeight(raw){
-const source=(raw||'').replace(/\r\n/g,'\n').trim();
-if(!source)return['لا يوجد نص في هذه الحكاية.'];
+  const source=(raw||'').replace(/\r\n/g,'\n').trim();
+  if(!source) return ['لا يوجد نص في هذه الحكاية.'];
 
-const measure=$('measurePage');
-const mobile=isMobileReader();
-const pageWidth=mobile?Math.min(window.innerWidth-70,390):390;
-measure.style.width=pageWidth+'px';
-measure.style.height=(mobile?560:620)+'px';
+  const measure=$('measurePage');
+  const mobile=isMobileReader();
+  const pageWidth=mobile?Math.min(window.innerWidth-70,390):390;
 
-const words=source.split(/(\s+)/);
-const pages=[];
-let current='';
+  measure.style.width=pageWidth+'px';
+  measure.style.height=(mobile?560:620)+'px';
 
-for(let i=0;i<words.length;){
-let token=words[i];
-let candidate=current+token;
-measure.textContent=candidate;
+  const words=source.split(/(\s+)/);
+  const pages=[];
+  let current='';
 
-if(measure.scrollHeight<=measure.clientHeight+1){
-current=candidate;
-i++;
-continue
-}
+  for(let i=0;i<words.length;){
+    let token=words[i];
+    let candidate=current+token;
+    measure.textContent=candidate;
 
-if(!current.trim()){
-current=token;
-i++;
-continue
-}
+    if(measure.scrollHeight<=measure.clientHeight+1){
+      current=candidate;
+      i++;
+      continue;
+    }
 
-pages.push(current.trim());
-current='';
-while(i<words.length&&/^\s+$/.test(words[i]))i++
-}
+    if(!current.trim()){
+      current=token;
+      i++;
+      continue;
+    }
 
-if(current.trim())pages.push(current.trim());
-return pages.length?pages:[source]
+    pages.push(current.trim());
+    current='';
+
+    while(i<words.length&&/^\s+$/.test(words[i])) i++;
+  }
+
+  if(current.trim()) pages.push(current.trim());
+
+  return pages.length?pages:[source];
 }
 
 function destroyFlip(){
-if(pageFlip){
-try{pageFlip.destroy()}catch(e){}
-pageFlip=null
-}
-$('flipbook').innerHTML=''
+  if(pageFlip){
+    try{
+      pageFlip.destroy();
+    }catch(e){
+      console.warn('PageFlip destroy error:',e);
+    }
+    pageFlip=null;
+  }
+
+  $('flipbook').innerHTML='';
 }
 
 function buildFlipbook(startPage=0){
-if(!currentStory)return;
-destroyFlip();
+  if(!currentStory) return;
 
-const pages=paginateByRenderedHeight(currentStory.body);
-const host=$('flipbook');
+  if(!window.St||!window.St.PageFlip){
+    alert('تعذر تحميل قارئ الصفحات. تحقق من اتصال الإنترنت.');
+    return;
+  }
 
-pages.forEach((text,i)=>{
-const page=document.createElement('div');
-page.className='page';
+  destroyFlip();
 
-const content=document.createElement('div');
-content.className='page-content';
-content.textContent=text;
+  const pages=paginateByRenderedHeight(currentStory.body);
+  const host=$('flipbook');
 
-const footer=document.createElement('div');
-footer.className='page-footer';
-footer.textContent = String(i + 1) + ' · كتابي';
+  pages.forEach((text,i)=>{
+    const page=document.createElement('div');
+    page.className='page';
 
-page.append(content,footer);
-host.appendChild(page)
-});
+    const content=document.createElement('div');
+    content.className='page-content';
+    content.textContent=text;
 
-const mobile=isMobileReader();
-const width=mobile?Math.max(280,Math.min(390,window.innerWidth-42)):420;
-const height=mobile?560:620;
+    const footer=document.createElement('div');
+    footer.className='page-footer';
+    footer.textContent=String(i+1)+' · كتابي';
 
-pageFlip=new St.PageFlip(host,{
-width,
-height,
-size:'stretch',
-minWidth:280,
-maxWidth:900,
-minHeight:420,
-maxHeight:700,
-drawShadow:true,
-flippingTime:750,
-usePortrait:true,
-startPage:Math.min(startPage,pages.length-1),
-autoSize:true,
-maxShadowOpacity:.35,
-showCover:false,
-mobileScrollSupport:true,
-swipeDistance:30,
-useMouseEvents:true
-});
+    page.append(content,footer);
+    host.appendChild(page);
+  });
 
-pageFlip.loadFromHTML(host.querySelectorAll('.page'));
-pageFlip.on('flip',e=>updateReaderControls(e.data,pages.length));
-updateReaderControls(Math.min(startPage,pages.length-1),pages.length)
+  const mobile=isMobileReader();
+  const width=mobile?Math.max(280,Math.min(390,window.innerWidth-42)):420;
+  const height=mobile?560:620;
+
+  pageFlip=new St.PageFlip(host,{
+    width,
+    height,
+    size:'stretch',
+    minWidth:280,
+    maxWidth:900,
+    minHeight:420,
+    maxHeight:700,
+    drawShadow:true,
+    flippingTime:750,
+    usePortrait:true,
+    startPage:Math.min(startPage,pages.length-1),
+    autoSize:true,
+    maxShadowOpacity:.35,
+    showCover:false,
+    mobileScrollSupport:true,
+    swipeDistance:30,
+    useMouseEvents:true
+  });
+
+  pageFlip.loadFromHTML(host.querySelectorAll('.page'));
+  pageFlip.on('flip',e=>updateReaderControls(e.data,pages.length));
+
+  updateReaderControls(Math.min(startPage,pages.length-1),pages.length);
 }
 
 function updateReaderControls(index,total){
-$('pageIndicator').textContent=صفحة ${index+1} من ${total};
-$('prevPageBtn').disabled=index<=0;
-$('nextPageBtn').disabled=index>=total-1
+  $('pageIndicator').textContent='صفحة '+(index+1)+' من '+total;
+  $('prevPageBtn').disabled=index<=0;
+  $('nextPageBtn').disabled=index>=total-1;
 }
 
 function openStoryById(id){
-const story=allWritings.find(x=>String(x.id)===String(id));
-if(!story)return;
+  const story=allWritings.find(x=>String(x.id)===String(id));
+  if(!story) return;
 
-currentStory=story;
-$('readerTitle').textContent=story.title||'بدون عنوان';
-$('readerMeta').textContent=الكاتب: ${getAuthorName(story)} · التصنيف: ${story.category||'أخرى'} · ${new Date(story.created_at).toLocaleDateString('ar-IQ')};
+  currentStory=story;
+  $('readerTitle').textContent=story.title||'بدون عنوان';
 
-$('mainCatalogView').classList.add('hidden');
-$('readerView').classList.remove('hidden');
+  $('readerMeta').textContent=
+    'الكاتب: '+getAuthorName(story)+
+    ' · التصنيف: '+(story.category||'أخرى')+
+    ' · '+new Date(story.created_at).toLocaleDateString('ar-IQ');
 
-buildFlipbook(0);
-$('readerView').scrollIntoView({behavior:'smooth'})
+  $('mainCatalogView').classList.add('hidden');
+  $('readerView').classList.remove('hidden');
+
+  buildFlipbook(0);
+  $('readerView').scrollIntoView({behavior:'smooth'});
 }
 
 function closeReader(scroll=true){
-$('readerView').classList.add('hidden');
-$('mainCatalogView').classList.remove('hidden');
-destroyFlip();
-currentStory=null;
-if(scroll)$('writings').scrollIntoView({behavior:'smooth'})
+  $('readerView').classList.add('hidden');
+  $('mainCatalogView').classList.remove('hidden');
+  destroyFlip();
+  currentStory=null;
+
+  if(scroll) $('writings').scrollIntoView({behavior:'smooth'});
 }
 
 function nextPage(){
-if(pageFlip&&pageFlip.getCurrentPageIndex()<pageFlip.getPageCount()-1)
-pageFlip.flipNext('bottom')
+  if(pageFlip&&pageFlip.getCurrentPageIndex()<pageFlip.getPageCount()-1){
+    pageFlip.flipNext('bottom');
+  }
 }
 
 function prevPage(){
-if(pageFlip&&pageFlip.getCurrentPageIndex()>0)
-pageFlip.flipPrev('bottom')
+  if(pageFlip&&pageFlip.getCurrentPageIndex()>0){
+    pageFlip.flipPrev('bottom');
+  }
 }
 
 window.addEventListener('resize',()=>{
-if(!$('readerView').classList.contains('hidden')&&currentStory){
-clearTimeout(resizeTimer);
-const oldPage=pageFlip?pageFlip.getCurrentPageIndex():0;
-resizeTimer=setTimeout(()=>buildFlipbook(oldPage),250)
-}
+  if(!$('readerView').classList.contains('hidden')&&currentStory){
+    clearTimeout(resizeTimer);
+    const oldPage=pageFlip?pageFlip.getCurrentPageIndex():0;
+    resizeTimer=setTimeout(()=>buildFlipbook(oldPage),250);
+  }
 });
 
 document.addEventListener('keydown',e=>{
-if($('readerView').classList.contains('hidden'))return;
-if(e.key==='ArrowLeft')nextPage();
-if(e.key==='ArrowRight')prevPage();
-if(e.key==='Escape')closeReader(true)
+  if($('readerView').classList.contains('hidden')) return;
+
+  if(e.key==='ArrowLeft') nextPage();
+  if(e.key==='ArrowRight') prevPage();
+  if(e.key==='Escape') closeReader(true);
 });
 
 function updateUI(){
-$('loginButton').classList.toggle('hidden',!!currentUser);
-$('logoutButton').classList.toggle('hidden',!currentUser);
-$('writePanel').classList.toggle('hidden',!currentUser);
-$('profilePanel').classList.toggle('hidden',!currentUser)
+  $('loginButton').classList.toggle('hidden',!!currentUser);
+  $('logoutButton').classList.toggle('hidden',!currentUser);
+  $('writePanel').classList.toggle('hidden',!currentUser);
+  $('profilePanel').classList.toggle('hidden',!currentUser);
 }
 
 async function start(){
-try{
-const{data,error}=await db.auth.getSession();
-if(error)throw error;
-currentUser=data.session?.user||null;
-updateUI();
-if(currentUser)await loadProfile();
-await loadWritings()
-}catch(e){
-msg('loginMessage','تعذر الاتصال: '+e.message)
-}
+  try{
+    const {data,error}=await db.auth.getSession();
+    if(error) throw error;
+
+    currentUser=data.session?.user||null;
+    updateUI();
+
+    if(currentUser) await loadProfile();
+
+    await loadWritings();
+  }catch(e){
+    $('posts').innerHTML='<div class="notice">تعذر الاتصال: '+safe(e.message||'خطأ غير معروف')+'</div>';
+    console.error('Kitabi start error:',e);
+  }
 }
 
 db.auth.onAuthStateChange((_event,session)=>{
-currentUser=session?.user||null;
-updateUI()
+  currentUser=session?.user||null;
+  updateUI();
 });
 
 start();
