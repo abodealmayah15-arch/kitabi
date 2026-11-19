@@ -6,7 +6,7 @@
 <title>كتابي — مكتبة الحكايات</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@400;500;700;800&family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#efeae0;--paper:#fbf7ef;--paper2:#f3ece0;--ink:#22252a;--muted:#6c665d;--navy:#1e2d3d;--navy2:#2b3f54;--gold:#a87f47;--border:#e2dacb;--shadow:0 18px 42px rgba(24,33,44,.15)}
 *{box-sizing:border-box}
@@ -62,7 +62,24 @@ label{display:block;font-size:14px;font-weight:700;color:#4a453e}
 .page-indicator{font-weight:700;color:var(--navy);background:var(--paper);border:1px solid var(--border);padding:8px 16px;border-radius:99px;font-size:14px}
 #measureArea{position:absolute;left:-10000px;top:0;visibility:hidden;pointer-events:none;width:390px;height:620px}
 .measure-page{width:390px;height:620px;padding:30px 32px 50px;font:20px/2.02 Amiri,serif;direction:rtl;white-space:pre-wrap;overflow:hidden;overflow-wrap:anywhere}
-footer{text-align:center;color:var(--muted);padding:32px 15px;font-size:14px}
+
+/* تصميم الكتاب الشخصي */
+.book-designer{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start}
+.cover-preview-wrap{display:flex;justify-content:center;padding:18px;background:#eee6d8;border-radius:14px}
+.personal-cover{width:220px;min-height:310px;border-radius:5px 13px 13px 5px;padding:24px 18px;display:flex;flex-direction:column;justify-content:space-between;text-align:center;color:#fff;box-shadow:8px 10px 20px #0003;border-right:10px solid #0003;position:relative;overflow:hidden}
+.personal-cover:before{content:"";position:absolute;inset:12px;border:1px solid #ffffff70;pointer-events:none}
+.personal-cover .cover-small{font-size:12px;opacity:.85}
+.personal-cover .cover-title{font:700 29px Amiri,serif;line-height:1.5;overflow-wrap:anywhere}
+.personal-cover .cover-author{font-size:14px}
+.template-options{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:10px 0 18px}
+.template-option{border:2px solid #ddd2c0;border-radius:8px;padding:6px;background:#fff;cursor:pointer;text-align:center;font-size:12px}
+.template-option.active{border-color:var(--gold);box-shadow:0 0 0 2px #a87f4730}
+.template-swatch{height:42px;border-radius:5px;margin-bottom:5px}
+.color-row{display:flex;gap:10px;flex-wrap:wrap;margin:8px 0 18px}
+.color-choice{width:34px;height:34px;border-radius:50%;border:3px solid white;box-shadow:0 0 0 1px #aaa;cursor:pointer}
+.color-choice.active{box-shadow:0 0 0 3px var(--gold)}
+.my-book-summary{display:flex;gap:18px;align-items:center;flex-wrap:wrap;background:var(--paper2);padding:18px;border-radius:12px;margin-top:15px}
+.mini-cover{width:82px;height:115px;border-radius:4px 8px 8px 4px;display:flex;align-items:center;justify-content:center;text-align:center;color:white;padding:8px;font:700 17px Amiri,serif;box-shadow:4px 5px 10px #0002}
 @media(max-width:700px){
 .reader-shell{padding:12px}
 .reader-banner{font-size:17px}
@@ -70,16 +87,15 @@ footer{text-align:center;color:var(--muted);padding:32px 15px;font-size:14px}
 #flipbook .page{padding:22px 20px 24px;font-size:19px;line-height:1.95}
 .reader-controls{justify-content:center}
 .page-indicator{order:-1;width:100%;text-align:center}
+.book-designer{grid-template-columns:1fr}
+.template-options{grid-template-columns:repeat(3,1fr)}
 }
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
 </style>
 </head>
 <body>
 <header>
-<div class="brand">
-<div class="logo">كتابي</div>
-<small>كل حكاية تستحق أن تُروى</small>
-</div>
+<div class="brand"><div class="logo">كتابي</div><small>كل حكاية تستحق أن تُروى</small></div>
 <div class="actions">
 <button class="ghost" onclick="openLibraryView()">المكتبة</button>
 <button class="secondary" onclick="go('writings')">اكتشف</button>
@@ -87,6 +103,7 @@ footer{text-align:center;color:var(--muted);padding:32px 15px;font-size:14px}
 <button class="secondary hidden" id="logoutButton" onclick="logout()">خروج</button>
 </div>
 </header>
+
 <main>
 <section id="readerView" class="reader-shell hidden" aria-label="قارئ الحكاية">
 <div class="reader-topbar">
@@ -104,6 +121,7 @@ footer{text-align:center;color:var(--muted);padding:32px 15px;font-size:14px}
 <button class="primary" id="nextPageBtn" onclick="nextPage()">الصفحة التالية</button>
 </div>
 </section>
+
 <div id="mainCatalogView">
 <section class="hero">
 <h1>أهلاً بك في كتابي</h1>
@@ -113,9 +131,10 @@ footer{text-align:center;color:var(--muted);padding:32px 15px;font-size:14px}
 <button class="secondary" onclick="go('writings')">تصفح المكتبة</button>
 </div>
 </section>
+
 <section class="panel hidden" id="loginPanel">
 <h2>حسابك في كتابي</h2>
-<label>اسم حساب إنستغرام بدون @</label>
+<label>اسم الحساب</label>
 <input id="username" maxlength="30" placeholder="مثلاً ahmed_iraq">
 <label>كلمة المرور (8 أحرف على الأقل)</label>
 <input id="password" type="password" autocomplete="current-password" placeholder="كلمة المرور">
@@ -124,24 +143,84 @@ footer{text-align:center;color:var(--muted);padding:32px 15px;font-size:14px}
 <button class="secondary" onclick="login()">دخول</button>
 </div>
 <div id="loginMessage" class="notice hidden"></div>
-<p style="font-size:12px;color:#777;margin-bottom:0">احتفظ بكلمة المرور، ولا تشاركها مع أحد. اسم إنستغرام هنا ليس إثباتاً لملكية الحساب.</p>
+<p style="font-size:12px;color:#777;margin-bottom:0">احتفظ بكلمة المرور، ولا تشاركها مع أحد.</p>
 </section>
+
 <section class="panel hidden" id="profilePanel">
 <h2>ملفي الشخصي</h2>
 <label>الاسم الظاهر للقراء</label>
 <input id="displayName" placeholder="اسمك">
 <label>نبذة عنك</label>
 <input id="bio" placeholder="نبذة قصيرة">
-<button class="primary" onclick="saveProfile()">حفظ</button>
+<button class="primary" onclick="saveProfile()">حفظ بيانات الملف</button>
 <div id="profileMessage" class="notice hidden"></div>
+
+<div class="divider" style="border-top:1px solid var(--border);margin:22px 0"></div>
+<h2>كتابي الشخصي</h2>
+<p style="color:var(--muted);font-size:14px">هذا غلاف كتابك الذي يظهر للقراء. تستطيع تغيير العنوان والتصميم واللون والخط.</p>
+<div class="my-book-summary">
+<div class="mini-cover" id="miniCover">كتابي</div>
+<div><strong id="summaryBookTitle">كتابي</strong><div id="bookWritingCount" style="font-size:13px;color:var(--muted)">كتابك يجمع كتاباتك المنشورة</div></div>
+</div>
+<button class="secondary" style="margin-top:15px" onclick="go('bookDesigner')">تخصيص غلاف كتابي</button>
 </section>
+
+<section class="panel hidden" id="bookDesigner">
+<h2>تصميم غلاف كتابي</h2>
+<div class="book-designer">
+<div>
+<label>معاينة الغلاف</label>
+<div class="cover-preview-wrap">
+<div class="personal-cover" id="coverPreview">
+<div class="cover-small">من مكتبة كتابي</div>
+<div class="cover-title" id="previewTitle">كتابي</div>
+<div class="cover-author" id="previewAuthor">اسم الكاتب</div>
+</div>
+</div>
+</div>
+<div>
+<label for="bookTitle">عنوان الكتاب</label>
+<input id="bookTitle" maxlength="100" value="كتابي" oninput="updateCoverPreview()">
+
+<label>اختر قالب الغلاف</label>
+<div class="template-options">
+<div class="template-option active" data-template="classic" onclick="chooseTemplate('classic')"><div class="template-swatch" style="background:linear-gradient(135deg,#24364b,#53677b)"></div>كلاسيكي</div>
+<div class="template-option" data-template="modern" onclick="chooseTemplate('modern')"><div class="template-swatch" style="background:linear-gradient(135deg,#34495e,#85929e)"></div>عصري</div>
+<div class="template-option" data-template="literary" onclick="chooseTemplate('literary')"><div class="template-swatch" style="background:linear-gradient(135deg,#5a382b,#a77b52)"></div>أدبي</div>
+<div class="template-option" data-template="elegant" onclick="chooseTemplate('elegant')"><div class="template-swatch" style="background:linear-gradient(135deg,#263d36,#658477)"></div>أنيق</div>
+<div class="template-option" data-template="minimal" onclick="chooseTemplate('minimal')"><div class="template-swatch" style="background:linear-gradient(135deg,#77716a,#b9ad9a)"></div>بسيط</div>
+</div>
+
+<label>لون الغلاف</label>
+<div class="color-row">
+<button type="button" class="color-choice active" style="background:#34495e" data-color="#34495e" onclick="chooseColor('#34495e')"></button>
+<button type="button" class="color-choice" style="background:#633c36" data-color="#633c36" onclick="chooseColor('#633c36')"></button>
+<button type="button" class="color-choice" style="background:#31594b" data-color="#31594b" onclick="chooseColor('#31594b')"></button>
+<button type="button" class="color-choice" style="background:#765a34" data-color="#765a34" onclick="chooseColor('#765a34')"></button>
+<button type="button" class="color-choice" style="background:#514365" data-color="#514365" onclick="chooseColor('#514365')"></button>
+<button type="button" class="color-choice" style="background:#292929" data-color="#292929" onclick="chooseColor('#292929')"></button>
+</div>
+
+<label for="bookFont">خط عنوان الكتاب</label>
+<select id="bookFont" onchange="updateCoverPreview()">
+<option value="Amiri">أميري</option>
+<option value="Tajawal">تجوال</option>
+<option value="Cairo">القاهرة</option>
+</select>
+<button class="primary" style="width:100%;margin-top:15px" onclick="saveBook()">حفظ تصميم الكتاب</button>
+<button class="secondary" style="width:100%;margin-top:8px" onclick="go('profilePanel')">العودة إلى ملفي</button>
+<div id="bookMessage" class="notice hidden"></div>
+</div>
+</div>
+</section>
+
 <section class="panel hidden" id="writePanel">
 <h2>أضف صفحة إلى كتابك</h2>
 <label>عنوان الكتابة</label>
 <input id="title" maxlength="150" placeholder="عنوان قصتك">
 <label>التصنيف</label>
 <select id="category">
-<option>خواطر</option><option>الحياة</option><option>التجارب</option><option>الذكريات</option><option>الحب</option><option>النجاح</option><option>رسائل</option><option>أخرى</option>
+<option>خواطر</option><option>قصص</option><option>ذكريات</option><option>تجارب حياتية</option><option>رسائل</option><option>الحب والعلاقات</option><option>النجاح والطموح</option><option>المجتمع والحياة</option><option>أدب وشعر</option><option>أخرى</option>
 </select>
 <label>انشر باسم</label>
 <select id="identity">
@@ -150,26 +229,28 @@ footer{text-align:center;color:var(--muted);padding:32px 15px;font-size:14px}
 <option value="anonymous">مجهول</option>
 </select>
 <div id="aliasBox" class="hidden">
-<label>الاسم المستعار</label>
-<input id="alias" placeholder="اسم مستعار">
+<label>الاسم المستعار</label><input id="alias" placeholder="اسم مستعار">
 </div>
 <label>نص الكتابة</label>
 <textarea id="body" placeholder="اكتب حكايتك هنا..."></textarea>
 <button class="primary" onclick="publish()">نشر الكتابة</button>
 <div id="publishMessage" class="notice hidden"></div>
 </section>
+
 <section id="writings">
 <h2>مكتبة الحكايات</h2>
 <div class="library-tools">
-<input class="search-box" id="searchInput" type="search" placeholder="ابحث بالعنوان أو اسم الكاتب..." oninput="renderLibrary()">
+<input class="search-box" id="searchInput" type="search" placeholder="ابحث باسم الكاتب..." oninput="renderLibrary()">
 <select class="cat-filter" id="categoryFilter" onchange="renderLibrary()">
-<option value="ALL">كل التصنيفات</option><option>خواطر</option><option>الحياة</option><option>التجارب</option><option>الذكريات</option><option>الحب</option><option>النجاح</option><option>رسائل</option><option>أخرى</option>
+<option value="ALL">كل التصنيفات</option>
+<option>خواطر</option><option>قصص</option><option>ذكريات</option><option>تجارب حياتية</option><option>رسائل</option><option>الحب والعلاقات</option><option>النجاح والطموح</option><option>المجتمع والحياة</option><option>أدب وشعر</option><option>أخرى</option>
 </select>
 </div>
 <div id="posts"><div class="notice">جارٍ تحميل الكتابات...</div></div>
 </section>
 </div>
 </main>
+
 <footer>كتابي ©️ 2026</footer>
 <div id="measureArea"><div class="measure-page" id="measurePage"></div></div>
 
@@ -177,502 +258,342 @@ footer{text-align:center;color:var(--muted);padding:32px 15px;font-size:14px}
 <script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.min.js"></script>
 <script src="config.js"></script>
 <script>
-const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-let currentUser = null;
-let allWritings = [];
-let currentStory = null;
-let pageFlip = null;
-let resizeTimer = null;
+const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+let currentUser=null;
+let allWritings=[];
+let currentStory=null;
+let pageFlip=null;
+let resizeTimer=null;
+let currentBook={book_title:'كتابي',cover_template:'classic',cover_color:'#34495e',font_family:'Amiri'};
 
-function $(id){
-  return document.getElementById(id);
-}
-
-function isMobileReader(){
-  return window.innerWidth <= 700;
-}
+const $=id=>document.getElementById(id);
 
 function go(id){
-  if(!$('readerView').classList.contains('hidden')) closeReader(false);
-  const el=$(id);
-  if(el) el.scrollIntoView({behavior:'smooth'});
+ if(!$('readerView').classList.contains('hidden'))closeReader(false);
+ const el=$(id);
+ if(el)el.scrollIntoView({behavior:'smooth'});
 }
-
-function openLibraryView(){
-  closeReader(true);
-  $('writings').scrollIntoView({behavior:'smooth'});
-}
-
-function msg(id,text){
-  const el=$(id);
-  el.textContent=text;
-  el.classList.remove('hidden');
-}
-
-function hide(id){
-  $(id).classList.add('hidden');
-}
-
-function toggleLogin(){
-  if(!$('readerView').classList.contains('hidden')) closeReader(false);
-  $('loginPanel').classList.toggle('hidden');
-  go('loginPanel');
-}
+function openLibraryView(){closeReader(true);$('writings').scrollIntoView({behavior:'smooth'});}
+function msg(id,text){const el=$(id);el.textContent=text;el.classList.remove('hidden');}
+function hide(id){$(id).classList.add('hidden');}
+function toggleLogin(){$('loginPanel').classList.toggle('hidden');go('loginPanel');}
 
 function credentials(){
-  const username=$('username').value.trim().toLowerCase();
-  const password=$('password').value;
-
-  if(!/^[a-z0-9._]{1,30}$/.test(username)){
-    throw new Error('اكتب اسم المستخدم بحروف إنجليزية أو أرقام أو نقطة أو شرطة سفلية.');
-  }
-
-  if(password.length<8){
-    throw new Error('كلمة المرور يجب أن تكون 8 أحرف على الأقل.');
-  }
-
-  return {
-    username:username,
-    password:password,
-    email:username+'@login.kitabi.invalid'
-  };
+ const username=$('username').value.trim().toLowerCase();
+ const password=$('password').value;
+ if(!/^[a-z0-9._]{1,30}$/.test(username))throw new Error('اكتب اسم المستخدم بحروف إنجليزية أو أرقام أو نقطة أو شرطة سفلية.');
+ if(password.length<8)throw new Error('كلمة المرور يجب أن تكون 8 أحرف على الأقل.');
+ return{username,password,email:username+'@login.kitabi.invalid'};
 }
-
-$('identity').addEventListener('change',function(){
-  $('aliasBox').classList.toggle('hidden',this.value!=='alias');
-});
+$('identity').addEventListener('change',function(){$('aliasBox').classList.toggle('hidden',this.value!=='alias');});
 
 async function register(){
-  hide('loginMessage');
-
-  try{
-    const c=credentials();
-    const {data,error}=await db.auth.signUp({
-      email:c.email,
-      password:c.password
-    });
-
-    if(error) throw error;
-
-    if(!data.session){
-      msg('loginMessage','الحساب لم يدخل تلقائياً. تأكد من تعطيل تأكيد البريد الإلكتروني في Supabase.');
-      return;
-    }
-
-    currentUser=data.user;
-
-    const {error:profileError}=await db.from('profiles').update({
-      instagram_username:c.username,
-      display_name:c.username
-    }).eq('id',currentUser.id);
-
-    if(profileError) throw profileError;
-
-    updateUI();
-    await loadProfile();
-    await loadWritings();
-    msg('loginMessage','تم إنشاء الحساب والدخول بنجاح.');
-  }catch(e){
-    msg('loginMessage','تعذر إنشاء الحساب: '+e.message);
-  }
-}
-
-async function login(){
-  hide('loginMessage');
-
-  try{
-    const c=credentials();
-    const {data,error}=await db.auth.signInWithPassword({
-      email:c.email,
-      password:c.password
-    });
-
-    if(error) throw error;
-
-    currentUser=data.user;
-    updateUI();
-    await loadProfile();
-    await loadWritings();
-    msg('loginMessage','تم تسجيل الدخول بنجاح.');
-  }catch(e){
-    msg('loginMessage','تعذر الدخول: '+e.message);
-  }
-}
-
-async function logout(){
-  await db.auth.signOut();
-  currentUser=null;
+ hide('loginMessage');
+ try{
+  const c=credentials();
+  const {data,error}=await db.auth.signUp({email:c.email,password:c.password});
+  if(error)throw error;
+  if(!data.session){msg('loginMessage','الحساب لم يدخل تلقائياً. تأكد من تعطيل تأكيد البريد الإلكتروني في Supabase.');return;}
+  currentUser=data.user;
+  const {error:profileError}=await db.from('profiles').update({instagram_username:c.username,display_name:c.username}).eq('id',currentUser.id);
+  if(profileError)throw profileError;
+  await ensureBook();
   updateUI();
-  location.reload();
+  await loadProfile();
+  await loadWritings();
+  msg('loginMessage','تم إنشاء الحساب والدخول بنجاح.');
+ }catch(e){msg('loginMessage','تعذر إنشاء الحساب: '+e.message);}
+}
+async function login(){
+ hide('loginMessage');
+ try{
+  const c=credentials();
+  const {data,error}=await db.auth.signInWithPassword({email:c.email,password:c.password});
+  if(error)throw error;
+  currentUser=data.user;
+  await ensureBook();
+  updateUI();
+  await loadProfile();
+  await loadWritings();
+  msg('loginMessage','تم تسجيل الدخول بنجاح.');
+ }catch(e){msg('loginMessage','تعذر الدخول: '+e.message);}
+}
+async function logout(){
+ await db.auth.signOut();
+ currentUser=null;
+ updateUI();
+ location.reload();
+}
+async function ensureBook(){
+ if(!currentUser)return;
+ const {data,error}=await db.from('books').select('*').eq('user_id',currentUser.id).maybeSingle();
+ if(error)throw error;
+ if(data){currentBook=data;return;}
+ const {data:newBook,error:insertError}=await db.from('books').insert({user_id:currentUser.id,book_title:'كتابي'}).select().single();
+ if(insertError)throw insertError;
+ currentBook=newBook;
 }
 
 async function loadProfile(){
-  if(!currentUser) return;
-
-  const {data,error}=await db.from('profiles')
-    .select('display_name,bio')
-    .eq('id',currentUser.id)
-    .maybeSingle();
-
-  if(error){
-    msg('profileMessage',error.message);
-    return;
-  }
-
-  if(data){
-    $('displayName').value=data.display_name||'';
-    $('bio').value=data.bio||'';
-  }
+ if(!currentUser)return;
+ const {data,error}=await db.from('profiles').select('display_name,bio').eq('id',currentUser.id).maybeSingle();
+ if(error){msg('profileMessage',error.message);return;}
+ if(data){$('displayName').value=data.display_name||'';$('bio').value=data.bio||'';}
+}
+async function saveProfile(){
+ if(!currentUser)return;
+ const display_name=$('displayName').value.trim();
+ const bio=$('bio').value.trim();
+ if(!display_name){msg('profileMessage','اكتب اسم العرض أولاً.');return;}
+ const {error}=await db.from('profiles').update({display_name,bio}).eq('id',currentUser.id);
+ if(error)msg('profileMessage','تعذر الحفظ: '+error.message);
+ else{msg('profileMessage','تم حفظ بياناتك.');updateCoverPreview();}
 }
 
-async function saveProfile(){
-  if(!currentUser) return;
-
-  const display_name=$('displayName').value.trim();
-  const bio=$('bio').value.trim();
-
-  if(!display_name){
-    msg('profileMessage','اكتب اسم العرض أولاً.');
-    return;
-  }
-
-  const {error}=await db.from('profiles').update({display_name,bio})
-    .eq('id',currentUser.id);
-
-  if(error) msg('profileMessage','تعذر الحفظ: '+error.message);
-  else msg('profileMessage','تم حفظ بياناتك.');
+async function loadBook(){
+ if(!currentUser)return;
+ try{
+  await ensureBook();
+  $('bookTitle').value=currentBook.book_title||'كتابي';
+  $('bookFont').value=currentBook.font_family||'Amiri';
+  chooseTemplate(currentBook.cover_template||'classic',false);
+  chooseColor(currentBook.cover_color||'#34495e',false);
+  updateCoverPreview();
+  updateBookSummary();
+ }catch(e){msg('bookMessage','تعذر تحميل تصميم الكتاب: '+e.message);}
+}
+async function saveBook(){
+ if(!currentUser){msg('bookMessage','سجّل الدخول أولاً.');return;}
+ const book_title=$('bookTitle').value.trim();
+ if(!book_title){msg('bookMessage','اكتب عنوان الكتاب.');return;}
+ const payload={
+  user_id:currentUser.id,
+  book_title,
+  cover_template:currentBook.cover_template,
+  cover_color:currentBook.cover_color,
+  font_family:$('bookFont').value
+ };
+ const {data,error}=await db.from('books').upsert(payload,{onConflict:'user_id'}).select().single();
+ if(error){msg('bookMessage','تعذر حفظ التصميم: '+error.message);return;}
+ currentBook=data;
+ updateCoverPreview();
+ updateBookSummary();
+ msg('bookMessage','تم حفظ تصميم كتابك بنجاح.');
+}
+function chooseTemplate(template,refresh=true){
+ currentBook.cover_template=template;
+ document.querySelectorAll('.template-option').forEach(el=>el.classList.toggle('active',el.dataset.template===template));
+ if(refresh)updateCoverPreview();
+}
+function chooseColor(color,refresh=true){
+ currentBook.cover_color=color;
+ document.querySelectorAll('.color-choice').forEach(el=>el.classList.toggle('active',el.dataset.color===color));
+ if(refresh)updateCoverPreview();
+}
+function updateCoverPreview(){
+ const title=$('bookTitle').value.trim()||'كتابي';
+ const color=currentBook.cover_color||'#34495e';
+ const font=$('bookFont').value||'Amiri';
+ const author=$('displayName').value.trim()||'اسم الكاتب';
+ const preview=$('coverPreview');
+ preview.style.background=color;
+ preview.style.fontFamily=font+',serif';
+ $('previewTitle').textContent=title;
+ $('previewAuthor').textContent=author;
+ $('miniCover').style.background=color;
+ $('miniCover').textContent=title;
+}
+function updateBookSummary(){
+ $('summaryBookTitle').textContent=currentBook.book_title||'كتابي';
+ updateCoverPreview();
 }
 
 async function publish(){
-  hide('publishMessage');
-
-  if(!currentUser){
-    msg('publishMessage','سجّل الدخول أولاً.');
-    return;
-  }
-
-  const title=$('title').value.trim();
-  const body=$('body').value.trim();
-  const category=$('category').value;
-  const identity_mode=$('identity').value;
-  const alias=$('alias').value.trim();
-
-  if(!body){
-    msg('publishMessage','اكتب نص الكتابة أولاً.');
-    return;
-  }
-
-  if(identity_mode==='alias'&&!alias){
-    msg('publishMessage','اكتب الاسم المستعار.');
-    return;
-  }
-
-  const {error}=await db.from('writings').insert({
-    user_id:currentUser.id,
-    title,
-    body,
-    category,
-    identity_mode,
-    alias:identity_mode==='alias'?alias:null
-  });
-
-  if(error){
-    msg('publishMessage','تعذر النشر: '+error.message);
-    return;
-  }
-
-  $('title').value='';
-  $('body').value='';
-  $('alias').value='';
-
-  msg('publishMessage','تم نشر كتابتك بنجاح.');
-  await loadWritings();
+ hide('publishMessage');
+ if(!currentUser){msg('publishMessage','سجّل الدخول أولاً.');return;}
+ const title=$('title').value.trim();
+ const body=$('body').value.trim();
+ const category=$('category').value;
+ const identity_mode=$('identity').value;
+ const alias=$('alias').value.trim();
+ if(!body){msg('publishMessage','اكتب نص الكتابة أولاً.');return;}
+ if(identity_mode==='alias'&&!alias){msg('publishMessage','اكتب الاسم المستعار.');return;}
+ const wordCount=body.split(/\s+/).filter(Boolean).length;
+ if(wordCount<10||wordCount>500){msg('publishMessage','عدد الكلمات يجب أن يكون بين 10 و500 كلمة. عدد كلماتك الحالي: '+wordCount);return;}
+ const {error}=await db.from('writings').insert({
+  user_id:currentUser.id,title,body,category,identity_mode,
+  alias:identity_mode==='alias'?alias:null,
+  visibility:'public',status:'published'
+ });
+ if(error){msg('publishMessage','تعذر النشر: '+error.message);return;}
+ $('title').value='';$('body').value='';$('alias').value='';
+ msg('publishMessage','تم نشر كتابتك بنجاح.');
+ await loadWritings();
 }
 
 function safe(v){
-  return String(v??'').replace(/[&<>"']/g,c=>({
-    '&':'&amp;',
-    '<':'&lt;',
-    '>':'&gt;',
-    '"':'&quot;',
-    "'":'&#39;'
-  }[c]));
+ return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 }
-
 function getAuthorName(p){
-  if(p.identity_mode==='profile') return p.profiles?.display_name||'كاتب';
-  if(p.identity_mode==='alias') return p.alias||'اسم مستعار';
-  return 'مجهول';
+ if(p.identity_mode==='profile')return p.profiles?.display_name||'كاتب';
+ if(p.identity_mode==='alias')return p.alias||'اسم مستعار';
+ return 'مجهول';
 }
-
 function renderLibrary(){
-  const box=$('posts');
-  const q=$('searchInput').value.trim().toLowerCase();
-  const cat=$('categoryFilter').value;
-
-  const filtered=allWritings.filter(p=>
-    (cat==='ALL'||p.category===cat)&&
-    (!q||
-      (p.title||'').toLowerCase().includes(q)||
-      getAuthorName(p).toLowerCase().includes(q)||
-      (p.body||'').toLowerCase().includes(q)
-    )
-  );
-
-  if(!filtered.length){
-    box.innerHTML='<div class="notice">لا توجد حكايات مطابقة للبحث أو التصنيف المحدد.</div>';
-    return;
-  }
-
-  box.innerHTML='<div class="books-grid">'+filtered.map(p=>{
-    const date=new Date(p.created_at).toLocaleDateString('ar-IQ');
-
-    return `<article class="book-card">
-      <div>
-        <div class="book-top">
-          <span class="book-category">${safe(p.category||'أخرى')}</span>
-          <span class="book-date">${safe(date)}</span>
-        </div>
-        <h3 class="book-title">${safe(p.title||'بدون عنوان')}</h3>
-        <p class="book-excerpt">${safe(p.body||'')}</p>
-      </div>
-      <div class="book-footer">
-        <div class="book-author">بقلم: ${safe(getAuthorName(p))}</div>
-        <button type="button" class="read-btn" data-id="${safe(p.id)}" onclick="openStoryById(this.dataset.id)">اقرأ الحكاية</button>
-      </div>
-    </article>`;
-  }).join('')+'</div>';
+ const box=$('posts');
+ const q=$('searchInput').value.trim().toLowerCase();
+ const cat=$('categoryFilter').value;
+ const filtered=allWritings.filter(p=>
+  (cat==='ALL'||p.category===cat)&&(!q||getAuthorName(p).toLowerCase().includes(q))
+ );
+ if(!filtered.length){box.innerHTML='<div class="notice">لا توجد حكايات مطابقة للبحث أو التصنيف المحدد.</div>';return;}
+ box.innerHTML='<div class="books-grid">'+filtered.map(p=>{
+  const date=new Date(p.created_at).toLocaleDateString('ar-IQ');
+  return `<article class="book-card"><div>
+  <div class="book-top"><span class="book-category">${safe(p.category||'أخرى')}</span><span class="book-date">${safe(date)}</span></div>
+  <h3 class="book-title">${safe(p.title||'بدون عنوان')}</h3>
+  <p class="book-excerpt">${safe(p.body||'')}</p></div>
+  <div class="book-footer"><div class="book-author">بقلم: ${safe(getAuthorName(p))}</div>
+  <button type="button" class="read-btn" data-id="${safe(p.id)}" onclick="openStoryById(this.dataset.id)">اقرأ الحكاية</button></div></article>`;
+ }).join('')+'</div>';
 }
-
 async function loadWritings(){
-  const box=$('posts');
-  box.innerHTML='<div class="notice">جارٍ تحميل الكتابات...</div>';
-
-  try{
-    const {data,error}=await db.from('writings')
-      .select('id,title,body,category,identity_mode,alias,created_at')
-      .order('created_at',{ascending:false});
-
-    if(error) throw error;
-
-    allWritings=data||[];
-    renderLibrary();
-
-    if(!allWritings.length){
-      box.innerHTML='<div class="notice">لا توجد كتابات منشورة بعد. كن أول من يكتب.</div>';
-    }
-  }catch(e){
-    box.innerHTML='<div class="notice">تعذر تحميل الكتابات: '+safe(e.message||'خطأ غير معروف')+'</div>';
-    console.error('Kitabi loadWritings error:',e);
+ const box=$('posts');
+ box.innerHTML='<div class="notice">جارٍ تحميل الكتابات...</div>';
+ try{
+  const {data,error}=await db.from('writings')
+   .select('id,user_id,title,body,category,identity_mode,alias,created_at,profiles(display_name)')
+   .order('created_at',{ascending:false});
+  if(error)throw error;
+  allWritings=data||[];
+  renderLibrary();
+  if(!allWritings.length)box.innerHTML='<div class="notice">لا توجد كتابات منشورة بعد. كن أول من يكتب.</div>';
+  if(currentUser){
+   const own=allWritings.filter(p=>p.user_id===currentUser.id).length;
+   $('bookWritingCount').textContent='عدد الكتابات الظاهرة في المكتبة: '+own;
   }
+ }catch(e){
+  box.innerHTML='<div class="notice">تعذر تحميل الكتابات: '+safe(e.message||'خطأ غير معروف')+'</div>';
+  console.error('Kitabi loadWritings error:',e);
+ }
 }
 
+function isMobileReader(){return window.innerWidth<=700;}
 function paginateByRenderedHeight(raw){
-  const source=(raw||'').replace(/\r\n/g,'\n').trim();
-  if(!source) return ['لا يوجد نص في هذه الحكاية.'];
-
-  const measure=$('measurePage');
-  const mobile=isMobileReader();
-  const pageWidth=mobile?Math.min(window.innerWidth-70,390):390;
-
-  measure.style.width=pageWidth+'px';
-  measure.style.height=(mobile?560:620)+'px';
-
-  const words=source.split(/(\s+)/);
-  const pages=[];
-  let current='';
-
-  for(let i=0;i<words.length;){
-    let token=words[i];
-    let candidate=current+token;
-    measure.textContent=candidate;
-
-    if(measure.scrollHeight<=measure.clientHeight+1){
-      current=candidate;
-      i++;
-      continue;
-    }
-
-    if(!current.trim()){
-      current=token;
-      i++;
-      continue;
-    }
-
-    pages.push(current.trim());
-    current='';
-
-    while(i<words.length&&/^\s+$/.test(words[i])) i++;
-  }
-
-  if(current.trim()) pages.push(current.trim());
-
-  return pages.length?pages:[source];
+ const source=(raw||'').replace(/\r\n/g,'\n').trim();
+ if(!source)return['لا يوجد نص في هذه الحكاية.'];
+ const measure=$('measurePage');
+ const mobile=isMobileReader();
+ const pageWidth=mobile?Math.min(window.innerWidth-70,390):390;
+ measure.style.width=pageWidth+'px';
+ measure.style.height=(mobile?560:620)+'px';
+ const words=source.split(/(\s+)/);
+ const pages=[];let current='';
+ for(let i=0;i<words.length;){
+  const token=words[i];measure.textContent=current+token;
+  if(measure.scrollHeight<=measure.clientHeight+1){current+=token;i++;continue;}
+  if(!current.trim()){current=token;i++;continue;}
+  pages.push(current.trim());current='';
+  while(i<words.length&&/^\s+$/.test(words[i]))i++;
+ }
+ if(current.trim())pages.push(current.trim());
+ return pages.length?pages:[source];
 }
-
 function destroyFlip(){
-  if(pageFlip){
-    try{
-      pageFlip.destroy();
-    }catch(e){
-      console.warn('PageFlip destroy error:',e);
-    }
-    pageFlip=null;
-  }
-
-  $('flipbook').innerHTML='';
+ if(pageFlip){try{pageFlip.destroy();}catch(e){console.warn(e);}pageFlip=null;}
+ $('flipbook').innerHTML='';
 }
-
 function buildFlipbook(startPage=0){
-  if(!currentStory) return;
-
-  if(!window.St||!window.St.PageFlip){
-    alert('تعذر تحميل قارئ الصفحات. تحقق من اتصال الإنترنت.');
-    return;
-  }
-
-  destroyFlip();
-
-  const pages=paginateByRenderedHeight(currentStory.body);
-  const host=$('flipbook');
-
-  pages.forEach((text,i)=>{
-    const page=document.createElement('div');
-    page.className='page';
-
-    const content=document.createElement('div');
-    content.className='page-content';
-    content.textContent=text;
-
-    const footer=document.createElement('div');
-    footer.className='page-footer';
-    footer.textContent=String(i+1)+' · كتابي';
-
-    page.append(content,footer);
-    host.appendChild(page);
-  });
-
-  const mobile=isMobileReader();
-  const width=mobile?Math.max(280,Math.min(390,window.innerWidth-42)):420;
-  const height=mobile?560:620;
-
-  pageFlip=new St.PageFlip(host,{
-    width,
-    height,
-    size:'stretch',
-    minWidth:280,
-    maxWidth:900,
-    minHeight:420,
-    maxHeight:700,
-    drawShadow:true,
-    flippingTime:750,
-    usePortrait:mobile,
-    startPage:Math.min(startPage,pages.length-1),
-    autoSize:true,
-    maxShadowOpacity:.35,
-    showCover:false,
-    mobileScrollSupport:true,
-    swipeDistance:30,
-    useMouseEvents:true
-  });
-
-  pageFlip.loadFromHTML(host.querySelectorAll('.page'));
-  pageFlip.on('flip',e=>updateReaderControls(e.data,pages.length));
-
-  updateReaderControls(Math.min(startPage,pages.length-1),pages.length);
+ if(!currentStory)return;
+ if(!window.St||!window.St.PageFlip){alert('تعذر تحميل قارئ الصفحات. تحقق من اتصال الإنترنت.');return;}
+ destroyFlip();
+ const pages=paginateByRenderedHeight(currentStory.body);
+ const host=$('flipbook');
+ pages.forEach((text,i)=>{
+  const page=document.createElement('div');page.className='page';
+  const content=document.createElement('div');content.className='page-content';content.textContent=text;
+  const footer=document.createElement('div');footer.className='page-footer';footer.textContent=String(i+1)+' · كتابي';
+  page.append(content,footer);host.appendChild(page);
+ });
+ const mobile=isMobileReader();
+ const width=mobile?Math.max(280,Math.min(390,window.innerWidth-42)):420;
+ const height=mobile?560:620;
+ pageFlip=new St.PageFlip(host,{
+  width,height,size:'stretch',minWidth:280,maxWidth:900,minHeight:420,maxHeight:700,
+  drawShadow:true,flippingTime:750,usePortrait:mobile,startPage:Math.min(startPage,pages.length-1),
+  autoSize:true,maxShadowOpacity:.35,showCover:false,mobileScrollSupport:true,swipeDistance:30,useMouseEvents:true
+ });
+ pageFlip.loadFromHTML(host.querySelectorAll('.page'));
+ pageFlip.on('flip',e=>updateReaderControls(e.data,pages.length));
+ updateReaderControls(Math.min(startPage,pages.length-1),pages.length);
 }
-
 function updateReaderControls(index,total){
-  $('pageIndicator').textContent='صفحة '+(index+1)+' من '+total;
-  $('prevPageBtn').disabled=index<=0;
-  $('nextPageBtn').disabled=index>=total-1;
+ $('pageIndicator').textContent='صفحة '+(index+1)+' من '+total;
+ $('prevPageBtn').disabled=index<=0;
+ $('nextPageBtn').disabled=index>=total-1;
 }
-
 function openStoryById(id){
-  const story=allWritings.find(x=>String(x.id)===String(id));
-  if(!story) return;
-
-  currentStory=story;
-  $('readerTitle').textContent=story.title||'بدون عنوان';
-
-  $('readerMeta').textContent=
-    'الكاتب: '+getAuthorName(story)+
-    ' · التصنيف: '+(story.category||'أخرى')+
-    ' · '+new Date(story.created_at).toLocaleDateString('ar-IQ');
-
-  $('mainCatalogView').classList.add('hidden');
-  $('readerView').classList.remove('hidden');
-
-  buildFlipbook(0);
-  $('readerView').scrollIntoView({behavior:'smooth'});
+ const story=allWritings.find(x=>String(x.id)===String(id));
+ if(!story)return;
+ currentStory=story;
+ $('readerTitle').textContent=story.title||'بدون عنوان';
+ $('readerMeta').textContent='الكاتب: '+getAuthorName(story)+' · التصنيف: '+(story.category||'أخرى')+' · '+new Date(story.created_at).toLocaleDateString('ar-IQ');
+ $('mainCatalogView').classList.add('hidden');
+ $('readerView').classList.remove('hidden');
+ buildFlipbook(0);
+ $('readerView').scrollIntoView({behavior:'smooth'});
 }
-
 function closeReader(scroll=true){
-  $('readerView').classList.add('hidden');
-  $('mainCatalogView').classList.remove('hidden');
-  destroyFlip();
-  currentStory=null;
-
-  if(scroll) $('writings').scrollIntoView({behavior:'smooth'});
+ $('readerView').classList.add('hidden');
+ $('mainCatalogView').classList.remove('hidden');
+ destroyFlip();currentStory=null;
+ if(scroll)$('writings').scrollIntoView({behavior:'smooth'});
 }
-
-function nextPage(){
-  if(pageFlip&&pageFlip.getCurrentPageIndex()<pageFlip.getPageCount()-1){
-    pageFlip.flipNext('bottom');
-  }
-}
-
-function prevPage(){
-  if(pageFlip&&pageFlip.getCurrentPageIndex()>0){
-    pageFlip.flipPrev('bottom');
-  }
-}
+function nextPage(){if(pageFlip&&pageFlip.getCurrentPageIndex()<pageFlip.getPageCount()-1)pageFlip.flipNext('bottom');}
+function prevPage(){if(pageFlip&&pageFlip.getCurrentPageIndex()>0)pageFlip.flipPrev('bottom');}
 
 window.addEventListener('resize',()=>{
-  if(!$('readerView').classList.contains('hidden')&&currentStory){
-    clearTimeout(resizeTimer);
-    const oldPage=pageFlip?pageFlip.getCurrentPageIndex():0;
-    resizeTimer=setTimeout(()=>buildFlipbook(oldPage),250);
-  }
+ if(!$('readerView').classList.contains('hidden')&&currentStory){
+  clearTimeout(resizeTimer);
+  const oldPage=pageFlip?pageFlip.getCurrentPageIndex():0;
+  resizeTimer=setTimeout(()=>buildFlipbook(oldPage),250);
+ }
 });
-
 document.addEventListener('keydown',e=>{
-  if($('readerView').classList.contains('hidden')) return;
-
-  if(e.key==='ArrowLeft') nextPage();
-  if(e.key==='ArrowRight') prevPage();
-  if(e.key==='Escape') closeReader(true);
+ if($('readerView').classList.contains('hidden'))return;
+ if(e.key==='ArrowLeft')nextPage();
+ if(e.key==='ArrowRight')prevPage();
+ if(e.key==='Escape')closeReader(true);
 });
-
 function updateUI(){
-  $('loginButton').classList.toggle('hidden',!!currentUser);
-  $('logoutButton').classList.toggle('hidden',!currentUser);
-  $('writePanel').classList.toggle('hidden',!currentUser);
-  $('profilePanel').classList.toggle('hidden',!currentUser);
+ $('loginButton').classList.toggle('hidden',!!currentUser);
+ $('logoutButton').classList.toggle('hidden',!currentUser);
+ $('writePanel').classList.toggle('hidden',!currentUser);
+ $('profilePanel').classList.toggle('hidden',!currentUser);
+ if(!currentUser)$('bookDesigner').classList.add('hidden');
 }
 
 async function start(){
-  try{
-    const {data,error}=await db.auth.getSession();
-    if(error) throw error;
-
-    currentUser=data.session?.user||null;
-    updateUI();
-
-    if(currentUser) await loadProfile();
-
-    await loadWritings();
-  }catch(e){
-    $('posts').innerHTML='<div class="notice">تعذر الاتصال: '+safe(e.message||'خطأ غير معروف')+'</div>';
-    console.error('Kitabi start error:',e);
-  }
-}
-
-db.auth.onAuthStateChange((_event,session)=>{
-  currentUser=session?.user||null;
+ try{
+  const {data,error}=await db.auth.getSession();
+  if(error)throw error;
+  currentUser=data.session?.user||null;
   updateUI();
+  if(currentUser){
+   await ensureBook();
+   await loadProfile();
+   await loadBook();
+  }
+  await loadWritings();
+ }catch(e){
+  $('posts').innerHTML='<div class="notice">تعذر الاتصال: '+safe(e.message||'خطأ غير معروف')+'</div>';
+  console.error('Kitabi start error:',e);
+ }
+}
+db.auth.onAuthStateChange((_event,session)=>{
+ currentUser=session?.user||null;
+ updateUI();
 });
-
 start();
 </script>
 </body>
