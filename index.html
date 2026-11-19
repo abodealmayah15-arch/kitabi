@@ -470,7 +470,7 @@ content.textContent=text;
 
 const footer=document.createElement('div');
 footer.className='page-footer';
-footer.textContent = ${i+1} · كتابي;
+footer.textContent = String(i + 1) + ' · كتابي';
 
 page.append(content,footer);
 host.appendChild(page)
