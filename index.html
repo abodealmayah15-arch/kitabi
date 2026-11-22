@@ -33,108 +33,8 @@ h2{font:700 25px Amiri,serif;color:var(--navy);margin:0 0 14px}
 input,textarea,select{width:100%;padding:12px 14px;margin:7px 0 15px;border:1px solid #d5cbb9;border-radius:9px;background:#fffdf9;color:var(--ink);font:15px Tajawal,sans-serif}
 textarea{min-height:165px;line-height:1.95}
 label{display:block;font-size:14px;font-weight:700;color:#4a453e}
-.notice{background:var(--paper2);color:#5b492d;border:1px solid #e2d5be;padding:13px 15px;border-radius:10px;margin-top:12px;overflow-wrap:anywhere}
-.hidden{display:none!important}
-.library-tools{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px}
-.search-box{flex:1 1 240px;margin:0}
-.cat-filter{flex:0 1 190px;margin:0}
-.books-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:22px}
-.book-card{background:linear-gradient(155deg,#fcf9f2,#f2e9d8);border:1px solid #dfd3be;border-right:8px solid var(--navy);border-radius:6px 14px 14px 6px;padding:22px 20px;min-height:275px;display:flex;flex-direction:column;justify-content:space-between;box-shadow:0 12px 24px #1e2d3d17}
-.book-top{display:flex;justify-content:space-between;gap:8px;margin-bottom:14px}
-.book-category{background:#a87f4729;color:#7a5829;border:1px solid #a87f4759;padding:3px 11px;border-radius:99px;font-size:12px}
-.book-date{font-size:12px;color:var(--muted)}
-.book-title{font:700 23px/1.4 Amiri,serif;color:var(--navy);margin:0 0 10px}
-.book-excerpt{font-size:13.5px;color:#57524b;line-height:1.75;margin:0 0 16px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
-.book-footer{border-top:1px dashed #d8ccb8;padding-top:13px;display:flex;flex-direction:column;gap:11px}
-.book-author{font-size:13.5px;color:var(--navy2);font-weight:700}
-.read-btn{width:100%;background:var(--navy);color:white}
-.reader-shell{background:linear-gradient(#e9e1d2,#dfd4c0);border:1px solid #d1c3aa;border-radius:18px;padding:20px;box-shadow:var(--shadow)}
-.reader-topbar{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;background:var(--navy);color:white;padding:14px 18px;border-radius:12px;margin-bottom:18px}
-.reader-banner{font:700 20px Amiri,serif;color:#f7efe0}
-.reader-story-meta{text-align:center;margin-bottom:16px}
-.reader-story-title{font:700 clamp(24px,3.2vw,34px) Amiri,serif;color:var(--navy);margin:0 0 6px}
-.reader-story-sub{font-size:13px;color:var(--muted)}
-#flipbook{width:100%;max-width:900px;margin:0 auto;direction:ltr}
-#flipbook .page{background:var(--paper);padding:30px 32px 22px;color:var(--ink);font:20px/2.02 Amiri,serif;direction:rtl;overflow:hidden;border:1px solid #e6dcc9}
-#flipbook .page-content{height:100%;overflow:hidden;white-space:pre-wrap;overflow-wrap:anywhere;text-align:right}
-#flipbook .page-footer{position:absolute;bottom:10px;left:0;right:0;text-align:center;border-top:1px solid #ece3d2;margin:0 28px;padding-top:5px;color:var(--muted);font:700 12px Tajawal,sans-serif}
-.reader-controls{margin:18px auto 0;max-width:900px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
-.page-indicator{font-weight:700;color:var(--navy);background:var(--paper);border:1px solid var(--border);padding:8px 16px;border-radius:99px;font-size:14px}
-#measureArea{position:absolute;left:-10000px;top:0;visibility:hidden;pointer-events:none;width:390px;height:620px}
-.measure-page{width:390px;height:620px;padding:30px 32px 50px;font:20px/2.02 Amiri,serif;direction:rtl;white-space:pre-wrap;overflow:hidden;overflow-wrap:anywhere}
-footer{text-align:center;color:var(--muted);padding:32px 15px;font-size:14px}
-@media(max-width:700px){
-.reader-shell{padding:12px}
-.reader-banner{font-size:17px}
-#flipbook{max-width:430px}
-#flipbook .page{padding:22px 20px 24px;font-size:19px;line-height:1.95}
-.reader-controls{justify-content:center}
-.page-indicator{order:-1;width:100%;text-align:center}
-}
-@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
-</style>
-</head>
-<body>
-<header>
-<div class="brand">
-<div class="logo">كتابي</div>
-<small>كل حكاية تستحق أن تُروى</small>
-</div>
-<div class="actions">
-<button class="ghost" onclick="openLibraryView()">المكتبة</button>
-<button class="secondary" onclick="go('writings')">اكتشف</button>
-<button class="primary" id="loginButton" onclick="toggleLogin()">دخول / حساب جديد</button>
-<button class="secondary hidden" id="logoutButton" onclick="logout()">خروج</button>
-</div>
-</header>
-<main>
-<section id="readerView" class="reader-shell hidden" aria-label="قارئ الحكاية">
-<div class="reader-topbar">
-<div class="reader-banner">كتابي · حكاية تستحق أن تُقرأ</div>
-<button class="secondary" onclick="closeReader(true)">العودة إلى المكتبة</button>
-</div>
-<div class="reader-story-meta">
-<h2 class="reader-story-title" id="readerTitle"></h2>
-<div class="reader-story-sub" id="readerMeta"></div>
-</div>
-<div id="flipbook"></div>
-<div class="reader-controls">
-<button class="primary" id="prevPageBtn" onclick="prevPage()">الصفحة السابقة</button>
-<div class="page-indicator" id="pageIndicator">صفحة 1</div>
-<button class="primary" id="nextPageBtn" onclick="nextPage()">الصفحة التالية</button>
-</div>
-</section>
-<div id="mainCatalogView">
-<section class="hero">
-<h1>أهلاً بك في كتابي</h1>
-<p>مكتبة قصص وخواطر وتجارب عربية؛ تصفح الأغلفة وافتح الحكاية ككتاب حقيقي، أو اكتب حكايتك وشاركها قرّاءك.</p>
-<div class="actions" style="justify-content:center">
-<button class="primary" onclick="go('writePanel')">اكتب حكايتك</button>
-<button class="secondary" onclick="go('writings')">تصفح المكتبة</button>
-</div>
-</section>
-<section class="panel hidden" id="loginPanel">
-<h2>حسابك في كتابي</h2>
-<label>اسم حساب إنستغرام بدون @</label>
-<input id="username" maxlength="30" placeholder="مثلاً ahmed_iraq">
-<label>كلمة المرور (8 أحرف على الأقل)</label>
-<input id="password" type="password" autocomplete="current-password" placeholder="كلمة المرور">
-<div class="actions">
-<button class="primary" onclick="register()">إنشاء حساب</button>
-<button class="secondary" onclick="login()">دخول</button>
-</div>
-<div id="loginMessage" class="notice hidden"></div>
-<p style="font-size:12px;color:#777;margin-bottom:0">احتفظ بكلمة المرور، ولا تشاركها مع أحد. اسم إنستغرام هنا ليس إثباتاً لملكية الحساب.</p>
-</section>
-<section class="panel hidden" id="profilePanel">
-<h2>ملفي الشخصي</h2>
-<input id="displayName" placeholder="اسمك">
-<label>نبذة عنك</label>
-<input id="bio" placeholder="نبذة قصيرة">
-<button class="primary" onclick="saveProfile()">حفظ</button>
-<div id="profileMessage" class="notice hidden"></div>
-</section>
-<section class="panel hidden" id="writePanel">
+.notice{background
+        <section class="panel hidden" id="writePanel">
 <h2>أضف صفحة إلى كتابك</h2>
 <label>عنوان الكتابة</label>
 <input id="title" maxlength="150" placeholder="عنوان قصتك">
@@ -302,7 +202,7 @@ $('displayName').value=data.display_name||'';
 $('bio').value=data.bio||''
 }
 }
-async function saveProfile(){
+  async function saveProfile(){
 if(!currentUser)return;
 const display_name=$('displayName').value.trim();
 const bio=$('bio').value.trim();
@@ -386,10 +286,10 @@ return `<article class="book-card">
 </article>`
 }).join('')+'</div>'
 }
-  async function loadWritings(){
+async function loadWritings(){
 const box=$('posts');
 const{data,error}=await db.from('writings')
-.select('id,title,body,category,identity_mode,alias,created_at,profiles(display_name)')
+.select('id,title,body,category,identity_mode,alias,created_at,profiles!writings_user_id_fkey(display_name)')
 .order('created_at',{ascending:false});
 
 if(error){
