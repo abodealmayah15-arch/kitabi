@@ -128,7 +128,6 @@ footer{text-align:center;color:var(--muted);padding:32px 15px;font-size:14px}
 </section>
 <section class="panel hidden" id="profilePanel">
 <h2>ملفي الشخصي</h2>
-<label>الاسم الظاهر للقراء</label>
 <input id="displayName" placeholder="اسمك">
 <label>نبذة عنك</label>
 <input id="bio" placeholder="نبذة قصيرة">
@@ -303,7 +302,6 @@ $('displayName').value=data.display_name||'';
 $('bio').value=data.bio||''
 }
 }
-
 async function saveProfile(){
 if(!currentUser)return;
 const display_name=$('displayName').value.trim();
@@ -388,8 +386,7 @@ return `<article class="book-card">
 </article>`
 }).join('')+'</div>'
 }
-
-async function loadWritings(){
+  async function loadWritings(){
 const box=$('posts');
 const{data,error}=await db.from('writings')
 .select('id,title,body,category,identity_mode,alias,created_at,profiles(display_name)')
@@ -452,8 +449,7 @@ pageFlip=null
 }
 $('flipbook').innerHTML=''
 }
-
-function buildFlipbook(startPage=0){
+  function buildFlipbook(startPage=0){
 if(!currentStory)return;
 destroyFlip();
 
@@ -470,7 +466,7 @@ content.textContent=text;
 
 const footer=document.createElement('div');
 footer.className='page-footer';
-footer.textContent=${i+1} · كتابي;
+footer.textContent = `${i+1} · كتابي`;
 
 page.append(content,footer);
 host.appendChild(page)
@@ -506,7 +502,7 @@ updateReaderControls(Math.min(startPage,pages.length-1),pages.length)
 }
 
 function updateReaderControls(index,total){
-$('pageIndicator').textContent=صفحة ${index+1} من ${total};
+$('pageIndicator').textContent = `صفحة ${index+1} من ${total}`;
 $('prevPageBtn').disabled=index<=0;
 $('nextPageBtn').disabled=index>=total-1
 }
@@ -517,7 +513,7 @@ if(!story)return;
 
 currentStory=story;
 $('readerTitle').textContent=story.title||'بدون عنوان';
-$('readerMeta').textContent=الكاتب: ${getAuthorName(story)} · التصنيف: ${story.category||'أخرى'} · ${new Date(story.created_at).toLocaleDateString('ar-IQ')};
+$('readerMeta').textContent = `الكاتب: ${getAuthorName(story)} · التصنيف: ${story.category||'أخرى'} · ${new Date(story.created_at).toLocaleDateString('ar-IQ')}`;
 
 $('mainCatalogView').classList.add('hidden');
 $('readerView').classList.remove('hidden');
